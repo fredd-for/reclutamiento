@@ -1,0 +1,223 @@
+<script type="text/javascript">
+// $(document).ready(function () {
+//       bootbox.confirm("<strong>FORMULARIO DE POSTULACIÓN</strong> <p>Este Formulario representa o tiene carácter de Declaración Jurada para los fines legales correspondientes.En caso de que mi postulación sea adjudicada, me comprometo a presentar toda la documentación en original o fotocopia legalizada, aceptando que el incumplimiento es causal de descalificación.</p>", function(result) {
+//                      if (result==false) {
+//                         window.location.replace("/login");
+//                      }
+//                 });  
+// });
+</script>
+<div class="container">
+    <div id="loginbox" class="mainbox col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2" style="margin-top:2px;">
+        <div class="content-header">
+            <div class="header-section">
+                <h1>
+                    <i class="gi gi-notes_2"></i>Registro Unico de Postulantes
+                </h1>
+            </div>
+        </div>
+        <?php // echo $pass ?>
+        <div class="panel panel-primary">
+            <div class="panel-body" style="padding-top:2px">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Datos Personales</div>
+                            </div>
+                            <div class="panel-body form-horizontal" >
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Puesto al que Postula</label>
+                                    <div class="col-md-8">
+                                    <select name="seguimiento_id" id="seguimiento_id" class="form-control">
+                                        <option value="">(Seleccionar)</option>
+                                        <?php foreach ($cargos as $v) { ?>
+                                            <option value="<?php echo $v->id ?>"><?php echo $v->cargo ?></option>
+                                        <?php  } ?>
+                                    </select>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Lugar de Postulación</label>
+                                    <div class="col-md-8">
+                                        <select name="lugar_postulacion" id="lugar_postulacion" class="form-control">
+                                            <option value="LA PAZ">LA PAZ</option>
+                                            <option value="EL ALTO">EL ALTO</option>
+                                            <option value="ORURO">ORURO</option>
+                                            <option value="POTOSI">POTOSI</option>
+                                            <option value="COCHABAMBA">COCHABAMBA</option>
+                                            <option value="CHUQUISACA">CHUQUISACA</option>
+                                            <option value="TARIJA">TARIJA</option>
+                                            <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                            <option value="BENI">BENI</option>
+                                            <option value="PANDO">PANDO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Nombre(s)</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre(s) completo" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Apellido Paterno</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="app" name="app" class="form-control" placeholder="Apellido Paterno" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Apellido Materno</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="apm" name="apm" class="form-control" placeholder="Apellido Materno" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Sexo</label>
+                                    <div class="col-md-8">
+                                    <select name="sexo" id="sexo" class="form-control">
+                                        <option value="MASCULINO">MASCULINO</option>
+                                        <option value="FEMENINO">FEMENINO</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Cedula de Identidad</label>
+                                    <div class="col-md-4">
+                                        <input type="text" id="ci" name="ci" class="form-control" placeholder="Cedula de identidad" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select name="expedido" id="expedido" class="form-control">
+                                            <option value="LA PAZ">LA PAZ</option>
+                                            <option value="ORURO">ORURO</option>
+                                            <option value="POTOSI">POTOSI</option>
+                                            <option value="COCHABAMBA">COCHABAMBA</option>
+                                            <option value="CHUQUISACA">CHUQUISACA</option>
+                                            <option value="TARIJA">TARIJA</option>
+                                            <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                            <option value="BENI">BENI</option>
+                                            <option value="PANDO">PANDO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Fecha Nacimiento</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="fecha_nac" name="fecha_nac" value="01-01-1980" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Nacionalidad</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="nacionalidad" name="nacionalidad" class="form-control" placeholder="Nacionalidad" readonly="readonly" value="Boliviano" />
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label class="col-md-4 control-label">Estado Civil</label>
+                                    <div class="col-md-8">
+                                    <select name="estado_civil" id="estado_civil" class="form-control">
+                                        <option value="SOLTERO">SOLTERO</option>
+                                        <option value="CASADO">CASADO</option>
+                                        <option value="DIVORCIADO">DIVORCIADO</option>
+                                        <option value="VIUDO">VIUDO</option>
+                                        <option value="UNION LIBRE">UNION LIBRE</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Nro. de Serie de Libreta Militar</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="libreta_militar" name="libreta_militar" class="form-control" placeholder="Numero de serie de libreta militar" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Certificado de Empadronamiento</label>
+                                    <div class="col-md-8">
+                                    <select name="empadronamiento" id="empadronamiento" class="form-control">
+                                        <option value="NO">NO</option>
+                                        <option value="SI">SI</option>
+                                    </select>
+                                    <span class="help-block">El certificado de empadronamiento debera ser presentado en caso de que sea seleccionado en la postulación.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Parentesco</label>
+                                    <div class="col-md-8">
+                                    <select name="parentesco" id="parentesco" class="form-control">
+                                        <option value="NO TIENE PARENTESCO EN LA EMPRESA">NO TIENE PARENTESCO EN LA EMPRESA</option>
+                                        <option value="TIENE PARENTESCO EN LA EMPRESA">TIENE PARENTESCO EN LA EMPRESA</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="col-md-8 col-md-offset-3">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-user"></i> Login</button>
+                                        <button type="reset" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Reset</button>
+                                    </div>
+                                </div> -->
+                            
+
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="col-md-5">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Datos Referenciales</div>
+                            </div>
+                            <div class="panel-body form-horizontal" >
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Dirección Domicilio</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Zona,calle o avenida,nro" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Teléfono</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Numero de telefono" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Celular</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="celular" name="celular" class="form-control" placeholder="Numero de celular" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Correo Electronico</label>
+                                    <div class="col-md-8">
+                                        <input type="email" id="correo" name="correo" class="form-control" placeholder="correo electronico" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Fax</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="fax" name="fax" class="form-control" placeholder=" Numero de fax" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Casilla de Correo</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="casilla" name="casilla" class="form-control" placeholder="Numero de Casilla de correo" />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-md-8 col-md-offset-3">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-user"></i> Guardar</button>
+                                        <a href="/" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Cancelar</a>
+                                        <!-- <button type="reset" class="btn btn-sm btn-warning"></button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>        
+    </div>
+</div>

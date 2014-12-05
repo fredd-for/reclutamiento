@@ -1,0 +1,27 @@
+<?php
+if (isset($_POST['username'])) {
+    $user = $_POST['username'];
+} else {
+    $user = '';
+}
+?>
+<!-- BEGIN ERROR BOX -->
+<?php  echo $this->flashSession->output(); ?> 
+<div class="alert alert-danger hide">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <h4>Error!</h4>
+    
+</div>
+<!-- END ERROR BOX -->
+<form action="" method="post">
+<p>Si ya te registrarte ingresa aquí para llenar tu formulario de postulaciónxxx</p>
+    <input type="text" name="username" placeholder="Correo Electronico" value="<?php  echo $user; ?>" class="input-field form-control user" />
+    <input type="password" name="password" placeholder="Contraseña" class="input-field form-control password" />
+    <button type="submit" class="btn btn-login">Ingresar</button>
+</form>
+<div class="login-links">
+    <a href="/login/password">Olvido su contraseña?</a>
+    <br>
+    <a href="/login/password">No tengo cuenta? <strong>Registrarme</strong></a>
+</div>
+
