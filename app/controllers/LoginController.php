@@ -26,7 +26,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
                 $user->save();
                 $this->_registerSession($user);
                 $this->flashSession->success('Bienvenido <i>' . $user->nombre . '</i>');
-                $this->response->redirect('/');
+                $this->response->redirect('/ppostulantes');
             }
             $this->flashSession->error('<b>Acceso denegado!</b> Usuario/contraseña incorrectos');
         }     
@@ -100,8 +100,15 @@ class LoginController extends \Phalcon\Mvc\Controller {
             $resul->libreta_militar = $this->request->getPost('libreta_militar');
             $resul->empadronamiento = $this->request->getPost('empadronamiento');
             $resul->parentesco = $this->request->getPost('parentesco');
+            $resul->nivel = 2;
             $resul->baja_logica = 1;
             if ($resul->save()) {
+                $resul2 = new Pposseguimientos();
+                $resul2->postulante_id=$resul->id;
+                $resul2->seguimiento_id = $this->request->getPost('seguimiento_id');
+                $resul2->estado = 0;
+                $resul2->baja_logica = 1;
+                $resul2->save();
                 $this->flashSession->success("<strong>Exito: </strong>Registro guardado correctamente.Revise su correo electronico, se le envio la contraseña para postularse. ");
             }else{
                 $this->flashSession->error("<strong>Error: </strong>no se guardo el registro...");

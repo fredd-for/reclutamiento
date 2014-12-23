@@ -9,6 +9,10 @@ class IndexController extends ControllerBase {
     public function indexAction() {
 
         $this->view->setVar('usuario', $this->_user);
+        $resul = Ppostulantes::findFirstByid($this->_user->id);
+        $this->view->setVar('postulante', $resul);
     }
+
+    
 
 }

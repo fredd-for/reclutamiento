@@ -206,11 +206,24 @@ class Ppostulantes extends \Phalcon\Mvc\Model
     public function cargosConvocatoria()
     {
         $sql = "SELECT s.id,CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
-FROM procesoscontrataciones p
-INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id
-INNER JOIN pacs pa ON s.pac_id= pa.id
-INNER JOIN cargos c ON pa.cargo_id=c.id
-WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_concl";
+        FROM procesoscontrataciones p
+        INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id
+        INNER JOIN pacs pa ON s.pac_id= pa.id
+        INNER JOIN cargos c ON pa.cargo_id=c.id
+        WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_concl";
+        $this->_db = new Procesoscontrataciones();
+        return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));        
+    }
+
+    public function puestopostula($postulante_id)
+    {
+        $sql = "SELECT p.*,CONCAT(pr.codigo_proceso,' ',c.cargo) AS cargo
+        FROM pposseguimientos p
+        INNER JOIN seguimientos s ON p.seguimiento_id = s.id
+        INNER JOIN procesoscontrataciones pr ON s.proceso_contratacion_id=pr.id AND pr.baja_logica=1
+        INNER JOIN pacs pa ON s.pac_id=pa.id
+        INNER JOIN cargos c ON pa.cargo_id = c.id
+        WHERE p.postulante_id='$postulante_id' AND p.baja_logica=1";
         $this->_db = new Procesoscontrataciones();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));        
     }

@@ -1,0 +1,229 @@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#lugar_postulacion").val('<?php echo $postulante->lugar_postulacion ?>');
+        $("#sexo").val('<?php echo $postulante->sexo ?>');
+        $("#expedido").val('<?php echo $postulante->expedido ?>');
+        $("#estado_civil").val('<?php echo $postulante->estado_civil ?>');
+        $("#empadronamiento").val('<?php echo $postulante->empadronamiento ?>');
+        $("#parentesco").val('<?php echo $postulante->parentesco ?>');
+        // $("#add").click(function(){
+        //     $("#titulo").text("Adicionar");
+        //     $("#id").val("");
+        //         //$("[type=radio][name=cargo_estado_id]:checked").removeAttr("checked");
+        //         $("#codigo").val("");
+        //         $("#organigrama_id").val("");
+        //         $("#depende_id").val("");
+        //         $("#fin_partida_id").val("");
+        //         $("#codigo_nivel").val("");
+        //         $("#cargo").val("");
+        //         $("#formacion_requerida").val("");
+        //         $("#sueldotxt").text("");
+        //         //$('input[name=cargo_estado_id][value="1"]').prop('checked', true);
+        //         // $("#popupWindow").jqxWindow('open');
+        //         $('#myModal').modal('show');
+        //     });
+        // $("#codigo_nivel").change(function(){
+        //     var element = $(this).find('option:selected'); 
+        //     var myTag = element.attr("sueldo"); 
+        //     $('#sueldotxt').text(myTag);
+        // });
+    });
+</script>
+<div class="block-title">
+    <h1>
+        <i class="gi gi-dashboard"></i>Pagina de Inicio<br><small>Bienvenido: <?php echo $usuario->nombre.' '.$usuario->app.' '.$usuario->apm; ?></small>
+    </h1>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-body" style="padding-top:2px">
+        <form action="" method="post">
+        <input type="hidden" name="id" value="<?php echo $postulante->id ?>">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title">Datos Personales</div>
+                        </div>
+                        <div class="panel-body form-horizontal" >
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Lugar de Postulación</label>
+                                <div class="col-md-8">
+                                    <select name="lugar_postulacion" id="lugar_postulacion" class="form-control" >
+                                        <option value="LA PAZ">LA PAZ</option>
+                                        <option value="EL ALTO">EL ALTO</option>
+                                        <option value="ORURO">ORURO</option>
+                                        <option value="POTOSI">POTOSI</option>
+                                        <option value="COCHABAMBA">COCHABAMBA</option>
+                                        <option value="CHUQUISACA">CHUQUISACA</option>
+                                        <option value="TARIJA">TARIJA</option>
+                                        <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                        <option value="BENI">BENI</option>
+                                        <option value="PANDO">PANDO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Nombre(s)</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre(s) completo" value="<?php echo $postulante->nombre ?>" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Apellido Paterno</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="app" name="app" class="form-control" placeholder="Apellido Paterno" value="<?php echo $postulante->app ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Apellido Materno</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="apm" name="apm" class="form-control" placeholder="Apellido Materno" value="<?php echo $postulante->apm ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Sexo</label>
+                                <div class="col-md-8">
+                                    <select name="sexo" id="sexo" class="form-control">
+                                        <option value="MASCULINO">MASCULINO</option>
+                                        <option value="FEMENINO">FEMENINO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Cedula de Identidad</label>
+                                <div class="col-md-4">
+                                    <input type="text" id="ci" name="ci" class="form-control" placeholder="Cedula de identidad" value="<?php echo $postulante->ci ?>"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <select name="expedido" id="expedido" class="form-control">
+                                        <option value="LA PAZ">LA PAZ</option>
+                                        <option value="ORURO">ORURO</option>
+                                        <option value="POTOSI">POTOSI</option>
+                                        <option value="COCHABAMBA">COCHABAMBA</option>
+                                        <option value="CHUQUISACA">CHUQUISACA</option>
+                                        <option value="TARIJA">TARIJA</option>
+                                        <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                        <option value="BENI">BENI</option>
+                                        <option value="PANDO">PANDO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Fecha Nacimiento</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="fecha_nac" name="fecha_nac" value="<?php echo date("d-m-Y", strtotime($postulante->fecha_nac)) ?>" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Nacionalidad</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="nacionalidad" name="nacionalidad" class="form-control" placeholder="Nacionalidad" readonly="readonly" value="BOLIVIANO" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Estado Civil</label>
+                                <div class="col-md-8">
+                                    <select name="estado_civil" id="estado_civil" class="form-control">
+                                        <option value="SOLTERO">SOLTERO</option>
+                                        <option value="CASADO">CASADO</option>
+                                        <option value="DIVORCIADO">DIVORCIADO</option>
+                                        <option value="VIUDO">VIUDO</option>
+                                        <option value="UNION LIBRE">UNION LIBRE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Nro. de Serie de Libreta Militar</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="libreta_militar" name="libreta_militar" class="form-control" placeholder="Numero de serie de libreta militar" value="<?php echo $postulante->libreta_militar ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Certificado de Empadronamiento</label>
+                                <div class="col-md-8">
+                                    <select name="empadronamiento" id="empadronamiento" class="form-control">
+                                        <option value="NO">NO</option>
+                                        <option value="SI">SI</option>
+                                    </select>
+                                    <span class="help-block">El certificado de empadronamiento debera ser presentado en caso de que sea seleccionado en la postulación.</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Parentesco</label>
+                                <div class="col-md-8">
+                                    <select name="parentesco" id="parentesco" class="form-control">
+                                        <option value="NO TIENE PARENTESCO EN LA EMPRESA">NO TIENE PARENTESCO EN LA EMPRESA</option>
+                                        <option value="TIENE PARENTESCO EN LA EMPRESA">TIENE PARENTESCO EN LA EMPRESA</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <!-- <div class="form-group">
+                                    <div class="col-md-8 col-md-offset-3">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-user"></i> Login</button>
+                                        <button type="reset" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Reset</button>
+                                    </div>
+                                </div> -->
+
+
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="col-md-5">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Datos Referenciales</div>
+                            </div>
+                            <div class="panel-body form-horizontal" >
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Dirección Domicilio</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Zona,calle o avenida,nro" value="<?php echo $postulante->direccion ?>"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Teléfono</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Numero de telefono" value="<?php echo $postulante->telefono ?>"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Celular</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="celular" name="celular" class="form-control" placeholder="Numero de celular" value="<?php echo $postulante->celular ?>"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Correo Electronico</label>
+                                    <div class="col-md-8">
+                                        <input type="email" id="correo" name="correo" class="form-control" placeholder="correo electronico" value="<?php echo $postulante->correo ?>" readonly/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Fax</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="fax" name="fax" class="form-control" placeholder=" Numero de fax" value="<?php echo $postulante->fax ?>"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Casilla de Correo</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="casilla" name="casilla" class="form-control" placeholder="Numero de Casilla de correo" value="<?php echo $postulante->casilla ?>"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-md-8 col-md-offset-3">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-user"></i> Guardar</button>
+                                        <a href="/" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Cancelar</a>
+                                        <!-- <button type="reset" class="btn btn-sm btn-warning"></button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>  
