@@ -2,11 +2,17 @@
 
 return new \Phalcon\Config(array(
     'database' => array(
-        'adapter'     => 'Postgresql',
+       'adapter'     => 'Postgresql',
+       /*  'host'        => 'localhost',
+        'username'    => 'postgres',
+        'password'    => 'r0salinda',
+        'dbname'      => 'bd_rrhh',
+       */
         'host'        => '192.168.10.158',
         'username'    => 'postgres',
         'password'    => 'miteleferico123',
         'dbname'      => 'bd_rrhh',
+        
     ),
     'application' => array(
         'controllersDir' => __DIR__ . '/../../app/controllers/',
@@ -18,8 +24,9 @@ return new \Phalcon\Config(array(
         'baseUri'        => '   ',
         // Cargar librería fpdf
         'fpdf'        => __DIR__ . '/../../app/libs/fpdf/',
-        //'t_pdf'        => __DIR__ . '/../../app/libs/fpdf/',
+        'phpexcel'    => __DIR__ . '/../../app/libs/phpexcel178/',
+        'phpmailer'    => __DIR__ . '/../../app/libs/phpmailer/',
+        'coolphpcaptcha'    => __DIR__ . '/../../app/libs/cool-php-captcha/',
         'baseUri'        => '',
     )
-
 ));

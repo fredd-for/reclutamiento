@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es" class="app">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="Ivan Marcelo Chacolla">
+        <meta name="keyword" content="">
+        <link rel="shortcut icon" href="img/favicon.png">
+        <?php echo $this->tag->getTitle(); ?>
+        <style>
+            body{font-family:Roboto,Arial,sans-serif;font-size:11px;font-weight:400;text-decoration:none}
+        </style>
+        <!-- CSS -->
+        <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
+         <!--[if IE 8]><script src="/assets/js/helpers/excanvas.min.js"></script><![endif]-->
+        <script src="/assets/js/vendor/jquery-1.11.0.min.js"></script>
+        <?php $this->assets->outputCss(); ?>
+        <!--[if lt IE 9]> <script src="/assets/js/ie/html5shiv.js"></script> <script src="/assets/js/ie/respond.min.js"></script> <script src="/assets/js/ie/excanvas.js"></script> <![endif]-->
+        <?php echo $this->assets->outputJs() ?> 
+        <script>
+            jQuery(document).ready(function () {
+                $('img#perfil').error(function () {
+                    $(this).attr('src', '/personal/hombre.jpg');
+                });
+
+            });
+        </script> 
+    </head>
+    <body>
+
+        <div id="page-container" class="header-fixed-top  footer-fixed sidebar-full ">
+            <div id="sidebar" class="">
+                <div class="sidebar-scroll">
+                    <div class="sidebar-content">
+                        <a href="/dashboard" class="sidebar-brand text-info">
+                            <i class="gi gi-building text-info"></i>Recursos Humanos
+                        </a>
+                        <div class="sidebar-section sidebar-user clearfix">
+                            <div class="sidebar-user-avatar">
+                                <a href="/">
+                                    <img src="/images/logo.png" salt="avatar" />
+                                </a>
+                            </div>
+                            <div class="sidebar-user-name"><?php echo $user->username; ?></div>
+                            <div class="sidebar-user-links">
+                                <a href="/usuario/perfil" data-toggle="tooltip" data-placement="bottom" title="Perfil"><i class="gi gi-user"></i></a>
+                                <a href="/usuario/mensajes" data-toggle="tooltip" data-placement="bottom" title="Mensajes"><i class="gi gi-envelope"></i></a>
+                                <a href="/usuario/password" data-toggle="modal" class="enable-tooltip" data-placement="bottom" title="Configuracion de Usuario"><i class="gi gi-cogwheel"></i></a>
+                                <a href="/usuario/logout" data-toggle="tooltip" data-placement="bottom" title="Cessar sesiòn"><i class="gi gi-exit"></i></a>
+                            </div>
+
+
+                        </div>
+                        <ul class="sidebar-section sidebar-themes clearfix">
+
+                        </ul>
+                        <div class="sidebar-header">
+                            <span class="sidebar-header-options clearfix">
+                                <a href="javascript:void(0)" data-toggle="tooltip" title="Refresh"><i class="fa fa-list-ul"></i></a>
+                            </span>
+                            <span class="sidebar-header-title">Menu</span>
+                        </div>
+                        <ul class="sidebar-nav">                            
+                            <?php
+                            // Creating a router
+                            $router = new \Phalcon\Mvc\Router();
+                            $router->handle();
+                            $controller = $router->getControllerName();
+                            $menu = array();
+                            $id = 0;
+                            foreach ($menus as $m):
+                                $menu[$m->id][$m->id_submenu]['id'] = $m->id_submenu;
+                                $menu[$m->id][$m->id_submenu]['submenu'] = $m->submenu;
+                                $menu[$m->id][$m->id_submenu]['accion'] = $m->accion;
+                                $menu[$m->id][$m->id_submenu]['descripcion'] = $m->descripcion;
+                            endforeach;
+                            $sm = 0;
+                            ?>
+                            <?php foreach ($menus as $m): ?>    
+
+                                <?php if ($id != $m->id): ?>
+
+                                    <?php if (count($menu[$m->id]) > 1): ?>
+
+                                        <li>
+                                            <?php if ($controller == $m->controlador): ?>
+                                                <a href="#" class="sidebar-nav-menu active" class1="" ><i class="fa fa-angle-left sidebar-nav-indicator"></i><i class="<?php echo $m->icon ?> "></i> <?php echo $m->menu; ?></a> 
+                                            <?php else: ?>
+                                                <a href="#" class="sidebar-nav-menu" class1="" ><i class="fa fa-angle-left sidebar-nav-indicator"></i><i class="<?php echo $m->icon ?> "></i> <?php echo $m->menu; ?></a> 
+                                            <?php endif; ?>
+
+                                            <ul> 
+                                                <?php
+                                                ksort($menu[$m->id]);
+                                                foreach ($menu[$m->id] as $k => $v):
+                                                    ?>
+                                                    <li>
+                                                        <a href="/<?php echo $m->controlador; ?>/<?php echo $menu[$m->id][$k]['accion']; ?>" title="<?php echo $menu[$m->id][$k]['descripcion']; ?>"><?php echo $menu[$m->id][$k]['submenu']; ?></a>        
+                                                    </li>    
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </li>
+                                    <?php else: ?>
+                                        <li>   
+                                            <?php if ($controller == $m->controlador): ?>
+                                                <a href="/<?php echo $m->controlador; ?>" class="active " ><i class="<?php echo $m->icon ?> "></i> <?php echo $m->menu; ?></a> 
+                                            <?php else: ?>
+                                                <a href="/<?php echo $m->controlador; ?>" class=" " ><i class="<?php echo $m->icon ?> "></i> <?php echo $m->menu; ?></a> 
+                                            <?php endif; ?>
+
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php
+                                    $id = $m->id;
+                                endif;
+                                ?>  
+                            <?php endforeach; ?>
+                        </ul>
+                        <div class="sidebar-header">
+                            <span class="sidebar-header-options clearfix">
+                                <a href="javascript:void(0)" data-toggle="tooltip" title="Refresh"><i class="gi gi-refresh"></i></a>
+                            </span>
+                            <span class="sidebar-header-title">Actividad Reciente</span>
+                        </div>
+                        <div class="sidebar-section">
+                            <div class="alert alert-success alert-alt">
+                                <small>5 min ago</small><br />
+                                <i class="fa fa-thumbs-up fa-fw"></i> You had a new sale ($10)
+                            </div>
+                            <div class="alert alert-info alert-alt">
+                                <small>10 min ago</small><br />
+                                <i class="fa fa-arrow-up fa-fw"></i> Upgraded to Pro plan
+                            </div>
+                            <div class="alert alert-warning alert-alt">
+                                <small>3 hours ago</small><br />
+                                <i class="fa fa-exclamation fa-fw"></i> Running low on space<br /><strong>18GB in use</strong> 2GB left
+                            </div>
+                            <div class="alert alert-danger alert-alt">
+                                <small>Yesterday</small><br />
+                                <i class="fa fa-bug fa-fw"></i> <a href="javascript:void(0)">New bug submitted</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="main-container">
+                <header class="navbar navbar-default navbar-fixed-top">
+                    <ul class="nav navbar-nav-custom">
+                        <li class="hidden-xs hidden-sm">
+                            <a href="javascript:void(0)" id="sidebar-toggle-lg">
+                                <i class="fa fa-list-ul fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="hidden-md hidden-lg">
+                            <a href="javascript:void(0)" id="sidebar-toggle-sm">
+                                <i class="fa fa-bars fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="hidden-md hidden-lg">
+                            <a href="./index.php.html">
+                                <i class="gi gi-stopwatch fa-fw"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <form action="page_ready_search_results.php" method="post" class="navbar-form-custom" role="search" />
+                    <div class="form-group">
+                        <input type="text" id="top-search" name="top-search" class="form-control" placeholder="Buscar.." />
+                    </div>
+                    </form>
+                    <ul class="nav navbar-nav-custom pull-right">
+
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                <img id="perfil" src="/personal/<?php echo $user->cedula_identidad; ?>.jpg" alt="<?php echo $user->nombre ?>" /> <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                                <li class="dropdown-header text-center">Cuenta</li>                                
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="./page_ready_user_profile.php.html">
+                                        <i class="fa fa-user fa-fw pull-right"></i>
+                                        Perfil
+                                    </a>
+                                    <a href="#modal-user-settings" data-toggle="modal">
+                                        <i class="fa fa-cog fa-fw pull-right"></i>
+                                        configuraci&oacute;n
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="/usuario/logout"><i class="fa fa-ban fa-fw pull-right"></i> Cerrar Sesion</a>
+                                </li>                                
+                            </ul>
+                        </li>
+                    </ul>
+
+
+
+
+                </header>
+                <div id="page-content">                
+                    <?php echo $this->getContent(); ?>                  
+                </div>                
+            </div>
+        </div>
+    </body>
+</html>

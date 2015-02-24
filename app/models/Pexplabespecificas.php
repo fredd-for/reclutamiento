@@ -19,7 +19,13 @@ class Pexplabespecificas extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $pos_seguimiento_id;
+    public $seguimiento_id;
+
+    /**
+     *
+     * @var integer
+     */
+    public $proceso_contratacion_id;
 
     /**
      *
@@ -85,6 +91,12 @@ class Pexplabespecificas extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
+    public $estado;
+
+    /**
+     *
+     * @var integer
+     */
     public $baja_logica;
 
     /**
@@ -103,7 +115,8 @@ class Pexplabespecificas extends \Phalcon\Mvc\Model
         return array(
             'id' => 'id', 
             'postulante_id' => 'postulante_id', 
-            'pos_seguimiento_id' => 'pos_seguimiento_id', 
+            'seguimiento_id' => 'seguimiento_id', 
+            'proceso_contratacion_id' => 'proceso_contratacion_id', 
             'gestion_desde' => 'gestion_desde', 
             'mes_desde' => 'mes_desde', 
             'gestion_hasta' => 'gestion_hasta', 
@@ -114,6 +127,7 @@ class Pexplabespecificas extends \Phalcon\Mvc\Model
             'inmediato_superior' => 'inmediato_superior', 
             'nombre_superior' => 'nombre_superior', 
             'doc_respaldo' => 'doc_respaldo', 
+            'estado' => 'estado', 
             'baja_logica' => 'baja_logica'
         );
     }

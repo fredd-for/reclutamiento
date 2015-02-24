@@ -1,14 +1,5 @@
-<script type="text/javascript">
-// $(document).ready(function () {
-//       bootbox.confirm("<strong>FORMULARIO DE POSTULACIÓN</strong> <p>Este Formulario representa o tiene carácter de Declaración Jurada para los fines legales correspondientes.En caso de que mi postulación sea adjudicada, me comprometo a presentar toda la documentación en original o fotocopia legalizada, aceptando que el incumplimiento es causal de descalificación.</p>", function(result) {
-//                      if (result==false) {
-//                         window.location.replace("/login");
-//                      }
-//                 });  
-// });
-</script>
-<div class="container">
-    <div id="loginbox" class="mainbox col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2" style="margin-top:2px;">
+<div class="row">
+    <div class="col-md-12" style="margin-top:2px;">
         <div class="content-header">
             <div class="header-section">
                 <h1>
@@ -16,7 +7,6 @@
                 </h1>
             </div>
         </div>
-        <?php // echo $pass ?>
         <div class="panel panel-primary">
             <div class="panel-body" style="padding-top:2px">
             <form action="" method="post">
@@ -27,20 +17,17 @@
                                 <div class="panel-title">Datos Personales</div>
                             </div>
                             <div class="panel-body form-horizontal" >
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Puesto al que Postula</label>
+                                <!-- <div class="form-group">
+                                    <label class="col-md-4 control-label">Puesto al que Postula <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                    <select name="seguimiento_id" id="seguimiento_id" class="form-control">
-                                        <option value="">(Seleccionar)</option>
-                                        <?php foreach ($cargos as $v) { ?>
-                                            <option value="<?php echo $v->id ?>"><?php echo $v->cargo ?></option>
-                                        <?php  } ?>
-                                    </select>
-                                        
+                                        <?php // foreach ($cargos as $v) { ?>
+                                            <dd><?php // echo $v->cargo ?></dd>
+
+                                        <?php // } ?>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Lugar de Postulación</label>
+                                    <label class="col-md-4 control-label">Lugar de Postulación <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
                                         <select name="lugar_postulacion" id="lugar_postulacion" class="form-control">
                                             <option value="LA PAZ">LA PAZ</option>
@@ -57,15 +44,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Nombre(s)</label>
+                                    <label class="col-md-4 control-label">Nombre(s) <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre(s) completo" />
+                                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre(s) completo" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Apellido Paterno</label>
+                                    <label class="col-md-4 control-label">Apellido Paterno <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="text" id="app" name="app" class="form-control" placeholder="Apellido Paterno" />
+                                        <input type="text" id="app" name="app" class="form-control" placeholder="Apellido Paterno" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -75,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Sexo</label>
+                                    <label class="col-md-4 control-label">Sexo <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
                                     <select name="sexo" id="sexo" class="form-control">
                                         <option value="MASCULINO">MASCULINO</option>
@@ -84,9 +71,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Cedula de Identidad</label>
+                                    <label class="col-md-4 control-label">Cedula de Identidad <span class="text-danger">*</span></label>
                                     <div class="col-md-4">
-                                        <input type="text" id="ci" name="ci" class="form-control" placeholder="Cedula de identidad" />
+                                        <input type="number" id="ci" name="ci" class="form-control" placeholder="Cedula de identidad" required/>
                                     </div>
                                     <div class="col-md-4">
                                         <select name="expedido" id="expedido" class="form-control">
@@ -103,9 +90,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Fecha Nacimiento</label>
+                                    <label class="col-md-4 control-label">Fecha Nacimiento <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="text" id="fecha_nac" name="fecha_nac" value="01-01-1980" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy"/>
+                                        <input type="text" id="fecha_nac" name="fecha_nac" value="01-01-1980" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -115,7 +102,7 @@
                                     </div>
                                 </div>
                                  <div class="form-group">
-                                    <label class="col-md-4 control-label">Estado Civil</label>
+                                    <label class="col-md-4 control-label">Estado Civil <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
                                     <select name="estado_civil" id="estado_civil" class="form-control">
                                         <option value="SOLTERO">SOLTERO</option>
@@ -129,7 +116,7 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Nro. de Serie de Libreta Militar</label>
                                     <div class="col-md-8">
-                                        <input type="text" id="libreta_militar" name="libreta_militar" class="form-control" placeholder="Numero de serie de libreta militar" />
+                                        <input type="text" id="libreta_militar" name="libreta_militar" class="form-control" placeholder="Numero de serie de libreta militar" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -143,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Parentesco</label>
+                                    <label class="col-md-4 control-label">Parentesco <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
                                     <select name="parentesco" id="parentesco" class="form-control">
                                         <option value="NO TIENE PARENTESCO EN LA EMPRESA">NO TIENE PARENTESCO EN LA EMPRESA</option>
@@ -169,30 +156,30 @@
                             </div>
                             <div class="panel-body form-horizontal" >
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Dirección Domicilio</label>
+                                    <label class="col-md-4 control-label">Dirección Domicilio <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Zona,calle o avenida,nro" />
+                                        <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Zona,calle o avenida,nro" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Teléfono</label>
+                                    <label class="col-md-4 control-label">Teléfono o Número Referencia <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Numero de telefono" />
+                                        <input type="number" id="telefono" name="telefono" class="form-control" placeholder="Numero de telefono" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Celular</label>
+                                    <label class="col-md-4 control-label">Celular <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="text" id="celular" name="celular" class="form-control" placeholder="Numero de celular" />
+                                        <input type="number" id="celular" name="celular" class="form-control" placeholder="Numero de celular" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Correo Electronico</label>
+                                    <label class="col-md-4 control-label">Correo Electronico <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
-                                        <input type="email" id="correo" name="correo" class="form-control" placeholder="correo electronico" />
+                                        <input type="email" id="correo" name="correo" class="form-control" placeholder="correo electronico" required/>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label class="col-md-4 control-label">Fax</label>
                                     <div class="col-md-8">
                                         <input type="text" id="fax" name="fax" class="form-control" placeholder=" Numero de fax" />
@@ -203,7 +190,7 @@
                                     <div class="col-md-8">
                                         <input type="text" id="casilla" name="casilla" class="form-control" placeholder="Numero de Casilla de correo" />
                                     </div>
-                                </div>
+                                </div> -->
                                 
                                 <div class="form-group">
                                     <div class="col-md-8 col-md-offset-3">
@@ -221,3 +208,35 @@
         </div>        
     </div>
 </div>
+
+<!-- Modal Reporte-->
+<div class="modal fade" id="myModal_rep" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_rep" data-toggle="validator" action="/login" method="POST" target="_blank" />
+            <!-- <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo">FORMULARIO DE POSTULACIÓN</h4>
+            </div> -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-md-12" >
+                    <p>Este Formulario representa o tiene carácter de Declaración Jurada para los fines legales correspondientes.</p>
+                    <p>En caso de que mi postulación sea adjudicada, me comprometo a presentar toda la documentación en original o fotocopia legalizada, aceptando que el incumplimiento es causal de descalificación.</p>
+                    </label>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Acepto</button>
+                <a href="/login" class="btn btn-primary">No Acepto</a>
+                <!-- <button type="submit" class="btn btn-primary" id="exportar_pdf">No Acepto</button> -->
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- end  modal -->
+<style type="text/css">
+        .datepicker{z-index:1151 !important;}
+    </style>

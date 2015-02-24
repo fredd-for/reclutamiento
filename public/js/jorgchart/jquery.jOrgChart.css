@@ -6,8 +6,8 @@
 }
 
 .jOrgChart .down {
-  background-color 		: black;	
-  margin 				: 0px auto;
+  background-color 	: black;	
+  margin 		: 0px auto;
 }
 
 .jOrgChart .top {
@@ -31,12 +31,13 @@
 
 /* The node */
 .jOrgChart .node {
-  background-color 		: #11203A;
+  background-color : #3498db;
   display               : inline-block;
-  width                 : 110px;
-  height                : 80px;
-  z-index 				: 10;
+  width                 : 115px;
+  height                : 135px;
+  z-index 		: 10;
   margin               : 0 2px;
+  vertical-align: bottom !important; 
 }
 
 /* jQuery drag 'n drop */

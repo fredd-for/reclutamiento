@@ -17,9 +17,15 @@ class Pformaciones extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
+     * @var integer
      */
     public $detalle;
+
+    /**
+     *
+     * @var integer
+     */
+    public $documento_id;
 
     /**
      *
@@ -80,6 +86,7 @@ class Pformaciones extends \Phalcon\Mvc\Model
             'id' => 'id', 
             'postulante_id' => 'postulante_id', 
             'detalle' => 'detalle', 
+            'documento_id' => 'documento_id', 
             'gestion' => 'gestion', 
             'institucion' => 'institucion', 
             'grado' => 'grado', 

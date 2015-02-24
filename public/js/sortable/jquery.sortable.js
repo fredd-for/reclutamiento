@@ -3,7 +3,7 @@
  * http://farhadi.ir/projects/html5sortable
  * 
  * Copyright 2012, Ali Farhadi
- * Released under the MIT license.Freddy Velasco
+ * Released under the MIT license.
  */
 (function($) {
 var dragging, placeholders = $();

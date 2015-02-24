@@ -1,93 +1,190 @@
 <!DOCTYPE html>
-<html lang="es" class="app">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="Ivan MArcelo">
-    <meta name="keyword" content="">
-    <link rel="shortcut icon" href="img/favicon.png">
-    <?php echo $this->tag->getTitle(); ?>
-    <style>
-        body{font-family:Roboto,Arial,sans-serif;font-size:11px;font-weight:400;text-decoration:none}
-    </style>
-    <!-- CSS -->
-    <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
-    <!--[if IE 8]><script src="/assets/js/helpers/excanvas.min.js"></script><![endif]-->
-    <script src="/assets/js/vendor/jquery-1.11.0.min.js"></script>
-    <?php $this->assets->outputCss(); ?>
-    <!--[if lt IE 9]> <script src="/assets/js/ie/html5shiv.js"></script> <script src="/assets/js/ie/respond.min.js"></script> <script src="/assets/js/ie/excanvas.js"></script> <![endif]-->
-    <?php echo $this->assets->outputJs() ?>  
-</head>
-<body id="page-top" class="index">
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->tag->getTitle(); ?>   
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- <link href="/media/less/styles.less" rel="stylesheet/less" media="all">  -->
+        <link rel="stylesheet" href="/media/css/styles.css?=121">
+        <link href='/media/demo/variations/default.css' rel='stylesheet' type='text/css' media='all' id='styleswitcher'> 
+        <!--<link href='/media/demo/variations/default.css' rel='stylesheet' type='text/css' media='all' id='headerswitcher'> -->
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="min-height:100px; position:relative">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#page-top">MI TELEFERICO - Postulación en Linea</a>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries. Placeholdr.js enables the placeholder attribute -->
+        <!--[if lt IE 9]>
+        <link rel="stylesheet" href="assets/css/ie8.css">
+                <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+                <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.1.0/respond.min.js"></script>
+        <script type="text/javascript" src="/media/plugins/charts-flot/excanvas.min.js"></script>
+        <![endif]-->
+
+        <!-- The following CSS are included as plugins and can be removed if unused-->
+
+        <link rel='stylesheet' type='text/css' href='/media/plugins/form-daterangepicker/daterangepicker-bs3.css' /> 
+        <link rel='stylesheet' type='text/css' href='/media/plugins/fullcalendar/fullcalendar.css' /> 
+        <link rel='stylesheet' type='text/css' href='/media/plugins/form-markdown/css/bootstrap-markdown.min.css' /> 
+        <link rel='stylesheet' type='text/css' href='/media/js/jqueryui.css' />
+        <link rel='stylesheet' type='text/css' href='/media/plugins/form-daterangepicker/daterangepicker-bs3.css' />
+        <link rel='stylesheet' type='text/css' href='/media/plugins/codeprettifier/prettify.css' /> 
+        <link rel='stylesheet' type='text/css' href='/media/plugins/form-toggle/toggles.css' /> 
+
+<!-- <script type="text/javascript" src="/media/js/less.js"></script> -->
+        <?php $this->assets->outputCss(); ?>
+        <script type='text/javascript' src="/media/js/jquery-1.10.2.min.js"></script>
+        <script type='text/javascript' src='/media/js/jqueryui-1.10.3.min.js'></script> 
+        <script type='text/javascript' src='/media/js/bootstrap.min.js'></script> 
+        <script type='text/javascript' src='/media/js/enquire.js'></script> 
+        <script type='text/javascript' src='/media/js/jquery.cookie.js'></script> 
+        <script type='text/javascript' src='/media/js/jquery.nicescroll.min.js'></script> 
+        <script type='text/javascript' src='/media/plugins/codeprettifier/prettify.js'></script>  
+        <script type='text/javascript' src='/media/plugins/form-toggle/toggle.min.js'></script> 
+        <script type='text/javascript' src='/media/plugins/pulsate/jQuery.pulsate.min.js'></script> 
+        <!--<script type='text/javascript' src='/media/demo/demo-index.js'></script> -->
+        <script type='text/javascript' src='/media/js/placeholdr.js'></script> 
+        <script type='text/javascript' src='/media/js/application.js'></script> 
+        <script type='text/javascript' src='/media/demo/demo.js'></script> 
+
+                <script type='text/javascript' src='/media/plugins/fullcalendar/fullcalendar.min.js'></script> 
+        <script type='text/javascript' src='/media/plugins/form-datepicker/js/bootstrap-datepicker.js'></script> 
+        <script type='text/javascript' src='/media/plugins/form-daterangepicker/daterangepicker.js'></script> 
+        <script type='text/javascript' src='/media/plugins/form-daterangepicker/moment.min.js'></script> 
+
+<?php echo $this->assets->outputJs(); ?> 
+        
+
+    </head>
+    <body class="">
+
+        <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+            <a id="leftmenu-trigger" class="tooltips" data-toggle="tooltip" data-placement="right" title="Toggle Menu"></a>            
+
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" href="/dashboad"></a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#portfolio">Postulación</a>
-                    </li>
-                    <li>
-                        <a href="usuario/logout">SALIR</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
+            <ul class="nav navbar-nav pull-right toolbar">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle username" data-toggle="dropdown"><span class="hidden-xs"><?php echo $user->nombre ?><i class="fa fa-caret-down"></i></span></a>
+                    <ul class="dropdown-menu userinfo arrow">
+                        <li class="username">
+                            <a href="#">
+                                <div class="pull-left"><img src="/media/demo/avatar/dangerfield.png" alt=""/></div>
+                                <div class="pull-right"><h5>Hola!</h5><small>Logged  <span><?php echo $user->username ?></span></small></div>
+                            </a>
+                        </li>
+                        <li class="userlinks">
+                            <ul class="dropdown-menu">                                
+                                <li><a href="/usuario/profile">Cuenta <i class="pull-right fa fa-cog"></i></a></li>
+                                <li><a href="#">Ayuda <i class="pull-right fa fa-question-circle"></i></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/login/exit" class="text-right">Salir</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
 
 
-    <!-- Contact Section -->
-    <section >
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- <div class="content-header">
-                        <div class="header-section">
-                            <h3>
-                                <i class="gi gi-dashboard"></i>Pagina de Inicio<br><small>Bienvenido: <?php echo $usuario->nombre; ?></small>
-                            </h3>
-                        </div>
-                    </div> -->
-                    <div id="page-content">                
-                        <?php echo $this->getContent(); ?>                  
-                    </div>  
+                <li class="dropdown demodrop">
+                    <a href="#" class="dropdown-toggle tooltips" data-toggle="dropdown"><i class="fa fa-magic"></i></a>
+
+                    <ul class="dropdown-menu arrow dropdown-menu-form" id="demo-dropdown">
+                        <li>
+                            <label for="demo-header-variations" class="control-label">Header Colors</label>
+                            <ul class="list-inline demo-color-variation" id="demo-header-variations">
+                                <li><a class="color-black" href="javascript:;"  data-headertheme="header-black.css"></a></li>
+                                <li><a class="color-dark" href="javascript:;"  data-headertheme="default.css"></a></li>
+                                <li><a class="color-red" href="javascript:;" data-headertheme="header-red.css"></a></li>
+                                <li><a class="color-blue" href="javascript:;" data-headertheme="header-blue.css"></a></li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <label for="demo-color-variations" class="control-label">Sidebar Colors</label>
+                            <ul class="list-inline demo-color-variation" id="demo-color-variations">
+                                <li><a class="color-lite" href="javascript:;"  data-theme="default.css"></a></li>
+                                <li><a class="color-steel" href="javascript:;" data-theme="sidebar-steel.css"></a></li>
+                                <li><a class="color-lavender" href="javascript:;" data-theme="sidebar-lavender.css"></a></li>
+                                <li><a class="color-green" href="javascript:;" data-theme="sidebar-green.css"></a></li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <label for="fixedheader">Fixed Header</label>
+                            <div id="fixedheader" style="margin-top:5px;"></div> 
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+
+        <div id="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <nav id="page-leftbar" class="" role="navigation">
+                <!-- BEGIN SIDEBAR MENU -->
+                <img src="/assets/img/logo.png"  width="100%" />
+                
+                <!-- END SIDEBAR MENU -->
+            </nav>
+            <div id="page-content">
+                <div id='wrap'>
+                    <div class="container">                        
+                        <?php echo $this->getContent(); ?>                                                         
+                    </div> <!-- container -->
+                </div> <!--wrap -->
+            </div> <!-- page-content -->
+
+            <footer role="contentinfo">
+                <div class="clearfix">
+                    <!--<ul class="list-unstyled list-inline pull-left">
+                        <li>IMCM &copy; 2014</li>
+                    </ul>-->
+                    <button class="pull-right btn btn-inverse-alt btn-xs hidden-print" id="back-to-top"><i class="fa fa-arrow-up"></i></button>
                 </div>
-            </div>
-        </div>
-    </section>
+            </footer>
 
-    <!-- Footer -->
-    <footer class="text-center">
+        </div> <!-- page-container -->
 
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyright &copy; Your Website 2014
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+        <!--
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        
+        <script>!window.jQuery && document.write(unescape('%3Cscript src="/media/js/jquery-1.10.2.min.js"%3E%3C/script%3E'))</script>
+        <script type="text/javascript">!window.jQuery.ui && document.write(unescape('%3Cscript src="/media/js/jqueryui-1.10.3.min.js'))</script>
+        -->
 
-</body>
+        
+        <script type="text/javascript">
+            $().ready(function () {
+                $('#myModal_rep').modal('show');    
+                $("#correo").blur(function() {
+                 var v=$.ajax({
+                    url:'/login/uniqueEmail/',
+                    type:'POST',
+                    datatype: 'json',
+                    data:{email:$('#correo').val()},
+                    success: function(data) { 
+                        if(data!=''){
+                            alert(data);
+                            $('#correo').val('');
+                            $('#correo').focus();
+                        }
+                                                }, //mostramos el error
+                                                error: function() { alert('Se ha producido un error Inesperado'); }
+                                            }); 
+                });
+
+                $("#sexo").change(function() {
+                    //alert($("#sexo").val());
+                   if($("#sexo").val()=="MASCULINO"){
+                        $("#libreta_militar").prop('required',true);
+                   }else{
+                        $("#libreta_militar").prop('required',false);
+                   }
+
+                });
+            });
+        </script>
+    </body>
 </html>

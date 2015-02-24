@@ -1,918 +1,325 @@
-<script type="text/javascript">
-    $(document).ready(function () {
-        /***********AJAX FORMACION ACADEMICA**************/
-        
-        cargarPformaciones();   
-        function cargarPformaciones(){
-            var source =
-            {
-                datatype: "json",
-                datafields: [
-                { name: 'id',type: 'number'},
-                { name: 'detalle',type: 'string'},
-                { name: 'gestion',type: 'number'},
-                { name: 'institucion',type: 'string'},
-                { name: 'grado',type: 'string'},
-                { name: 'numero_titulo',type: 'string'},
-                { name: 'nombre_rector',type: 'string'},
-                { name: 'fecha_emision',type: 'date'}
-                ],
-                url: '/ppostulantes/listPformaciones/',
-                cache: false
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-
-            $("#jqxgridPformaciones").jqxGrid(
-            {
-                width: '100%',
-                height: '100%',
-                source: dataAdapter,
-                sortable: true,
-                altRows: true,
-                //groupable: true,
-                columnsresize: true,
-                pageable: true,
-                // pagerMode: 'advanced',
-                // showfilterrow: true,
-                filterable: true,
-                // showtoolbar: true,
-                autorowheight: true,
-                columns: [
-                {
-                    text: '#', sortable: false, filterable: false, editable: false,
-                    groupable: false, draggable: false, resizable: false,
-                    datafield: '', columntype: 'number', width: '5%',
-                    cellsrenderer: function (row, column, value) {
-                        return "<div style='margin:4px;'>" + (value + 1) + "</div>";
-                    }
-                },
-                { text: 'Detalle', datafield: 'detalle', filtertype: 'input',width: '25%' },
-                { text: 'Año', datafield: 'gestion', filtertype: 'number',width: '10%' },
-                { text: 'Institución', datafield: 'institucion',filtertype: 'input', width: '20%' },
-                { text: 'Grado o Titulo Obtenido', datafield: 'grado',filtertype: 'input', width: '20%' },
-                { text: 'Nro Titulo', datafield: 'numero_titulo',filtertype: 'input', width: '8%' },
-                { text: 'Fecha Emisión', datafield: 'fecha_emision', filtertype: 'date', width: '12%', cellsalign: 'center', cellsformat: 'dd-MM-yyyy', align:'center'},
-
-                ]
-            });
-
-}
-
-// update the edited row when the user clicks the 'Save' button.
-$("#add_formacion").click(function(){
-    $("#titulo").text("Adicionar Formación Academica");
-    $("#pformacion_id").val("");
-    $("#detalle").val("");
-    $("#gestion").val("");
-    $("#institucion").val("");
-    $("#grado").val("");
-    $("#numero_titulo").val("");
-    $("#fecha_emision").val("");
-    $('#myModal_Pformaciones').modal('show');
-});
-
-$("#edit_formacion").click(function() {
-    $("#titulo").text("Editar Formación Academica");
-    var rowindex = $("#jqxgridPformaciones").jqxGrid("getselectedrowindex");
-    if (rowindex > -1)
-    {
-        var dataRecord = $("#jqxgridPformaciones").jqxGrid('getrowdata', rowindex);
-        $("#pformacion_id").val(dataRecord.id);
-        $("#detalle").val(dataRecord.detalle);
-        $("#gestion").val(dataRecord.gestion);
-        $("#institucion").val(dataRecord.institucion);
-        $("#grado").val(dataRecord.grado);
-        $("#numero_titulo").val(dataRecord.numero_titulo);
-        var fe = $.jqx.dataFormat.formatdate(dataRecord.fecha_emision, 'dd-MM-yyyy');
-        $("#fecha_emision").val(fe);
-        $('#myModal_Pformaciones').modal('show');     
-    }
-    else{
-        bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
-    }
-})
-
-$("#delete_formacion").click(function() {
-    var rowindex = $("#jqxgridPformaciones").jqxGrid("getselectedrowindex");
-    if (rowindex > -1)
-    {   
-        var dataRecord = $("#jqxgridPformaciones").jqxGrid('getrowdata', rowindex);
-        $("#pformacion_id").val(dataRecord.id);
-        bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de eliminar el registro.", function(result) {
-            if (result==true) {
-                var v=$.ajax({
-                    url:'/ppostulantes/deletePformaciones/',
-                    type:'POST',
-                    datatype: 'json',
-                    data:{pformacion_id:$("#pformacion_id").val()},
-                        success: function(data) { cargarPformaciones(); //alert('Guardado Correctamente'); 
-                                                }, //mostramos el error
-                                                error: function() { alert('Se ha producido un error Inesperado'); }
-                                            });
-            }
-        });        
-    }
-    else{
-        bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para eliminar.");
-    }
-
-})
-
-
-$('#testForm_pformacion').validate({
-    rules: {
-        detalle: {
-            required: true        
-        },
-        gestion: {
-            required: true
-        },
-        grado: {
-            required: true
-        },
-        numero_titulo: {
-            required: true
-        },
-        fecha_emision: {
-            required: true
-        },
-        institucion: {
-            required: true
-        }
-    },
-    highlight: function (element) {
-        $(element).closest('.control-group').removeClass('success').addClass('error');
-    },
-    success: function (element) {
-        //element.text('OK!').addClass('valid').closest('.control-group').removeClass('error').addClass('success');
-        element.addClass('valid').closest('.control-group').removeClass('error').addClass('success');
-    },
-    submitHandler: function (form) {
-
-        var v=$.ajax({
-            url:'/ppostulantes/savePformaciones/',
-            type:'POST',
-            datatype: 'json',
-            data:{pformacion_id:$("#pformacion_id").val(),detalle:$("#detalle").val(),gestion:$("#gestion").val(),institucion:$("#institucion").val(),grado:$("#grado").val(),numero_titulo:$("#numero_titulo").val(),fecha_emision:$("#fecha_emision").val()},
-                success: function(data) { cargarPformaciones(); //alert(data); 
-                }, //mostramos el error
-                error: function() { alert('Se ha producido un error Inesperado'); }
-            });
-        $('#myModal_Pformaciones').modal('hide');
-            return false; // ajax used, block the normal submit
-        }
-    });
-/***************FIN FORMACION ACADEMICA**************************/
-
-
-        /***********AJAX EXPERIENCIA LABORAL GENERAL**************/
-        
-        cargarPexplabgeneral();   
-        function cargarPexplabgeneral(){
-            var source =
-            {
-                datatype: "json",
-                datafields: [
-                { name: 'id',type: 'number'},
-                { name: 'gestion_desde',type: 'number'},
-                { name: 'mes_desde',type: 'string'},
-                { name: 'desde',type: 'string'},
-                { name: 'gestion_hasta',type: 'number'},
-                { name: 'mes_hasta',type: 'string'},
-                { name: 'hasta',type: 'string'},
-                { name: 'cargo',type: 'string'},
-                { name: 'empresa',type: 'string'},
-                { name: 'motivo_retiro',type: 'string'},
-                { name: 'doc_respaldo',type: 'string'}
-                ],
-                url: '/ppostulantes/listPexplabgeneral/',
-                cache: false
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-
-            $("#jqxgridPexplabgeneral").jqxGrid(
-            {
-                width: '100%',
-                height: '100%',
-                source: dataAdapter,
-                sortable: true,
-                altRows: true,
-                //groupable: true,
-                columnsresize: true,
-                pageable: true,
-                // pagerMode: 'advanced',
-                // showfilterrow: true,
-                filterable: true,
-                // showtoolbar: true,
-                autorowheight: true,
-                columns: [
-                {
-                    text: '#', sortable: false, filterable: false, editable: false,
-                    groupable: false, draggable: false, resizable: false,
-                    datafield: '', columntype: 'number', width: '2%',
-                    cellsrenderer: function (row, column, value) {
-                        return "<div style='margin:4px;'>" + (value + 1) + "</div>";
-                    }
-                },
-                { text: 'Desde', datafield: 'desde', filtertype: 'input',width: '15%' },
-                { text: 'Hasta', datafield: 'hasta', filtertype: 'input',width: '15%' },
-                { text: 'Cargo', datafield: 'cargo',filtertype: 'input', width: '20%' },
-                { text: 'Empresa o Institución', datafield: 'empresa',filtertype: 'input', width: '15%' },
-                { text: 'Motivo Retiro', datafield: 'motivo_retiro',filtertype: 'input', width: '18%' },
-                { text: 'Documento Respaldo', datafield: 'doc_respaldo',filtertype: 'input', width: '15%' }
-
-                ]
-            });
-
-}
-
-// update the edited row when the user clicks the 'Save' button.
-$("#add_explabgeneral").click(function(){
-    $("#titulo_explabgeneral").text("Adicionar Experiencia Laboral General");
-    $("#pexplabgeneral_id").val("");
-    $("#gestion_desde").val("");
-    $("#mes_desde").val("");
-    $("#gestion_hasta").val("");
-    $("#mes_hasta").val("");
-    $("#cargo").val("");
-    $("#empresa").val("");
-    $("#motivo_retiro").val("");
-    $("#doc_respaldo").val("");
-    $('#myModal_Pexplabgeneral').modal('show');
-});
-
-$("#edit_explabgeneral").click(function() {
-    $("#titulo_explabgeneral").text("Editar Experiencia Laboral General");
-    var rowindex = $("#jqxgridPexplabgeneral").jqxGrid("getselectedrowindex");
-    if (rowindex > -1)
-    {
-        var dataRecord = $("#jqxgridPexplabgeneral").jqxGrid('getrowdata', rowindex);
-        $("#pexplabgeneral_id").val(dataRecord.id);
-        $("#gestion_desde").val(dataRecord.gestion_desde);
-        $("#mes_desde").val(dataRecord.mes_desde);
-        $("#gestion_hasta").val(dataRecord.gestion_hasta);
-        $("#mes_hasta").val(dataRecord.mes_hasta);
-        $("#cargo").val(dataRecord.cargo);
-        $("#empresa").val(dataRecord.empresa);
-        $("#motivo_retiro").val(dataRecord.motivo_retiro);
-        $("#doc_respaldo").val(dataRecord.doc_respaldo);
-        $('#myModal_Pexplabgeneral').modal('show');     
-    }
-    else{
-        bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
-    }
-})
-
-$("#delete_explabgeneral").click(function() {
-    var rowindex = $("#jqxgridPexplabgeneral").jqxGrid("getselectedrowindex");
-    if (rowindex > -1)
-    {   
-        var dataRecord = $("#jqxgridPexplabgeneral").jqxGrid('getrowdata', rowindex);
-        $("#pexplabgeneral_id").val(dataRecord.id);
-        bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de eliminar el registro.", function(result) {
-            if (result==true) {
-                var v=$.ajax({
-                    url:'/ppostulantes/deletePexplabgeneral/',
-                    type:'POST',
-                    datatype: 'json',
-                    data:{pexplabgeneral_id:$("#pexplabgeneral_id").val()},
-                        success: function(data) { cargarPexplabgeneral(); //alert('Guardado Correctamente'); 
-                                                }, //mostramos el error
-                                                error: function() { alert('Se ha producido un error Inesperado'); }
-                                            });
-            }
-        });        
-    }
-    else{
-        bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para eliminar.");
-    }
-
-})
-
-
-$('#testForm_pexplabgeneral').validate({
-    rules: {
-        gestion_desde: {
-            required: true
-        },
-        mes_desde: {
-            required: true
-        },
-        gestion_hasta: {
-            required: true
-        },
-        mes_hasta: {
-            required: true
-        },
-        cargo: {
-            required: true
-        },
-        empresa: {
-            required: true
-        },
-        motivo_retiro: {
-            required: true
-        },
-        doc_respaldo: {
-            required: true
-        }
-    },
-    highlight: function (element) {
-        $(element).closest('.control-group').removeClass('success').addClass('error');
-    },
-    success: function (element) {
-        //element.text('OK!').addClass('valid').closest('.control-group').removeClass('error').addClass('success');
-        element.addClass('valid').closest('.control-group').removeClass('error').addClass('success');
-    },
-    submitHandler: function (form) {
-
-        var v=$.ajax({
-            url:'/ppostulantes/savePexplabgeneral/',
-            type:'POST',
-            datatype: 'json',
-            data:{pexplabgeneral_id:$("#pexplabgeneral_id").val(),gestion_desde:$("#gestion_desde").val(),mes_desde:$("#mes_desde").val(),gestion_hasta:$("#gestion_hasta").val(),mes_hasta:$("#mes_hasta").val(),cargo:$("#cargo").val(),empresa:$("#empresa").val(),motivo_retiro:$("#motivo_retiro").val(),doc_respaldo:$("#doc_respaldo").val()},
-                success: function(data) { cargarPexplabgeneral(); //alert(data); 
-                }, //mostramos el error
-                error: function() { alert('Se ha producido un error Inesperado'); }
-            });
-        $('#myModal_Pexplabgeneral').modal('hide');
-            return false; // ajax used, block the normal submit
-        }
-    });
-/***************FIN EXPERIENCIA LABORAL GENERAL**************************/
-
-
-/***********AJAX EXPERIENCIA RELACIONADA AL CARGO**************/
-        
-        cargarPexplabespecifica();   
-        function cargarPexplabespecifica(){
-            var source =
-            {
-                datatype: "json",
-                datafields: [
-                { name: 'id',type: 'number'},
-                { name: 'gestion_desde',type: 'number'},
-                { name: 'mes_desde',type: 'string'},
-                { name: 'desde',type: 'string'},
-                { name: 'gestion_hasta',type: 'number'},
-                { name: 'mes_hasta',type: 'string'},
-                { name: 'hasta',type: 'string'},
-                { name: 'cargo',type: 'string'},
-                { name: 'desc_fun',type: 'string'},
-                { name: 'doc_respaldo',type: 'string'},
-                { name: 'pospue',type: 'string'}
-                ],
-                url: '/ppostulantes/listPexplabespecifica/',
-                cache: false
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-
-            $("#jqxgridPexplabespecifica").jqxGrid(
-            {
-                width: '100%',
-                height: '100%',
-                source: dataAdapter,
-                sortable: true,
-                altRows: true,
-                //groupable: true,
-                columnsresize: true,
-                pageable: true,
-                // pagerMode: 'advanced',
-                // showfilterrow: true,
-                filterable: true,
-                // showtoolbar: true,
-                autorowheight: true,
-                columns: [
-                {
-                    text: '#', sortable: false, filterable: false, editable: false,
-                    groupable: false, draggable: false, resizable: false,
-                    datafield: '', columntype: 'number', width: '2%',
-                    cellsrenderer: function (row, column, value) {
-                        return "<div style='margin:4px;'>" + (value + 1) + "</div>";
-                    }
-                },
-                { text: 'Puesto', datafield: 'pospue', filtertype: 'input',width: '15%' },
-                { text: 'Desde', datafield: 'desde', filtertype: 'input',width: '10%' },
-                { text: 'Hasta', datafield: 'hasta', filtertype: 'input',width: '10%' },
-                { text: 'Cargo', datafield: 'cargo',filtertype: 'input', width: '15%' },
-                { text: 'Empresa o Institución', datafield: 'empresa',filtertype: 'input', width: '15%' },
-                { text: 'Descripción Funciones', datafield: 'desc_fun',filtertype: 'input', width: '18%' },
-                { text: 'Documento Respaldo', datafield: 'doc_respaldo',filtertype: 'input', width: '15%' }
-
-                ]
-            });
-
-}
-
-// update the edited row when the user clicks the 'Save' button.
-$("#add_explabespecifica").click(function(){
-    $("#titulo_explabespecifica").text("Adicionar Experiencia Relacionada al Cargo");
-    $("#pexplabespecifica_id").val("");
-    $("#gestion_desde").val("");
-    $("#mes_desde").val("");
-    $("#gestion_hasta").val("");
-    $("#mes_hasta").val("");
-    $("#cargo").val("");
-    $("#institucion").val("");
-    // $("#pospue").val("");
-    $("#doc_respaldo").val("");
-    $('#myModal_Pexplabespecifica').modal('show');
-});
-
-$("#edit_explabespecifica").click(function() {
-    $("#titulo_explabespecifica").text("Editar Experiencia Relacionada al Cargo");
-    var rowindex = $("#jqxgridPexplabespecifica").jqxGrid("getselectedrowindex");
-    if (rowindex > -1)
-    {
-        var dataRecord = $("#jqxgridPexplabespecifica").jqxGrid('getrowdata', rowindex);
-        $("#pexplabespecifica_id").val(dataRecord.id);
-        $("#gestion_desde").val(dataRecord.gestion_desde);
-        $("#mes_desde").val(dataRecord.mes_desde);
-        $("#gestion_hasta").val(dataRecord.gestion_hasta);
-        $("#mes_hasta").val(dataRecord.mes_hasta);
-        $("#cargo").val(dataRecord.cargo);
-        $("#institucion").val(dataRecord.institucion);
-        $("#pospue").val(dataRecord.pospue);
-        $("#doc_respaldo").val(dataRecord.doc_respaldo);
-        $('#myModal_Pexplabespecifica').modal('show');     
-    }
-    else{
-        bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
-    }
-})
-
-$("#delete_explabespecifica").click(function() {
-    var rowindex = $("#jqxgridPexplabespecifica").jqxGrid("getselectedrowindex");
-    if (rowindex > -1)
-    {   
-        var dataRecord = $("#jqxgridPexplabespecifica").jqxGrid('getrowdata', rowindex);
-        $("#pexplabespecifica_id").val(dataRecord.id);
-        bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de eliminar el registro.", function(result) {
-            if (result==true) {
-                var v=$.ajax({
-                    url:'/ppostulantes/deletePexplabespecifica/',
-                    type:'POST',
-                    datatype: 'json',
-                    data:{pexplabespecifica_id:$("#pexplabespecifica_id").val()},
-                        success: function(data) { cargarPexplabespecifica(); //alert('Guardado Correctamente'); 
-                                                }, //mostramos el error
-                                                error: function() { alert('Se ha producido un error Inesperado'); }
-                                            });
-            }
-        });        
-    }
-    else{
-        bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para eliminar.");
-    }
-
-})
-
-
-$('#testForm_pexplabespecifica').validate({
-    rules: {
-        gestion_desde_explabesp: {
-            required: true
-        },
-        mes_desde_explabesp: {
-            required: true
-        },
-        gestion_hasta_explabesp: {
-            required: true
-        },
-        mes_hasta_explabesp: {
-            required: true
-        },
-        cargo_explabesp: {
-            required: true
-        },
-        institucion_explabesp: {
-            required: true
-        },
-        desc_fun_explabesp: {
-            required: true
-        },
-        pospue_explabesp: {
-            required: true
-        },
-        doc_respaldo_explabesp: {
-            required: true
-        }
-    },
-    highlight: function (element) {
-        $(element).closest('.control-group').removeClass('success').addClass('error');
-    },
-    success: function (element) {
-        //element.text('OK!').addClass('valid').closest('.control-group').removeClass('error').addClass('success');
-        element.addClass('valid').closest('.control-group').removeClass('error').addClass('success');
-    },
-    submitHandler: function (form) {
-            alert($("#gestion_desde_explabesp").val());
-        var v=$.ajax({
-            url:'/ppostulantes/savePexplabespecifica/',
-            type:'POST',
-            datatype: 'json',
-            data:{pexplabespecifica_id:$("#pexplabespecifica_id").val(),gestion_desde:$("#gestion_desde_explabesp").val(),mes_desde:$("#mes_desde_explabesp").val(),gestion_hasta:$("#gestion_hasta_explabesp").val(),mes_hasta:$("#mes_hasta_explabesp").val(),cargo:$("#cargo_explabesp").val(),institucion:$("#institucion_explabesp").val(),desc_fun:$("#desc_fun_explabesp").val(),pospue:$("#pospue_explabesp").val(),doc_respaldo:$("#doc_respaldo_explabesp").val()},
-                success: function(data) { cargarPexplabespecifica(); //alert(data); 
-                }, //mostramos el error
-                error: function() { alert('Se ha producido un error Inesperado'); }
-            });
-        $('#myModal_Pexplabespecifica').modal('hide');
-            return false; // ajax used, block the normal submit
-        }
-    });
-/***************FIN EXPERIENCIA RELACIONADA AL CARGO**************************/
-
-});
-</script>
-
+<?php echo $variable; ?>
 <div class="row">
-    <div class="col-sm-12 animation-stretchRight">
+    <div class="col-sm-12">
         <div class="widget">
-         <div id="chartdiv" style="width: 100%; height: 400px;">
-
+         <div id="chartdiv" style="width: 100%; height: 500px;">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="block">
-                        <div class="block-title">
-                            <!-- <h2><strong>Validation</strong> Wizard</h2> -->
-                            <h1>
-                                <i class="gi gi-dashboard"></i>Pagina de Inicio<br><small>Bienvenido: <?php echo $usuario->nombre.' '.$usuario->app.' '.$usuario->apm; ?></small>
-                            </h1>
-                        </div>
-                        <form id="advanced-wizard" action="page_forms_wizard.php" method="post" class="form-horizontal form-bordered" />
-                        <div id="advanced-uno" class="step">
-                            <div class="wizard-steps">
-                                <div class="row">
-                                    <div class="col-xs-1">
-                                    </div>
-                                    <div class="col-xs-1 active">
-                                        <span>Datos Personales</span>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <span>Formación Academica</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Experiencia Laboral General</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Experiencia Relacionada al Cargo</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Cursos y Seminarios</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Manejo de Paquetes de Computación</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Idiomas</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Docencia</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Referencias Personales</span>
-                                    </div>
-                                    <div class="col-xs-1">
-                                    </div>
-                                </div>
-                            </div>
 
+                    <div class="block-title">
+                        <h3 style="color:#2D78D5">
+                            <i class="gi gi-dashboard"></i>Bienvenido: <?php echo $usuario->nombre.' '.$usuario->app.' '.$usuario->apm; ?>
+                        </h3>
+                    </div>
+                    <form action="" method="post" id="wizard" class="form-horizontal">
+                        <fieldset title="Paso 1">
+                            <legend>Datos Personales</legend>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="block">
-                                        <div class="block-title">
-                                            <h2><strong>Datos Personales</strong></h2>
+                                <div class="col-md-12"><?php  echo $this->flashSession->output(); ?> </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="block">
+                                    <div class="block-title">
+                                        <h2><strong>Datos Personales</strong></h2>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Puesto al que Postula</dt>
                                         </div>
-                                        <dl class="dl-horizontal">
-                                            <dt>Puesto al que Postula</dt>
+                                        <div class="col-md-7">
                                             <?php foreach ($puestopostula as $v) { ?>
-                                                <dd><?php echo $v->cargo ?></dd>    
+                                            <dd><?php echo $v->cargo ?></dd>    
                                             <?php } ?>
-                                            
-                                            <dt>Lugar de Postulación</dt>
-                                            <dd><?php echo $postulante->lugar_postulacion ?></dd>
-                                            <dt>Nombre(s) y Apellidos</dt>
-                                            <dd><?php echo $postulante->nombre.' '.$postulante->app. ' '.$postulante->apm ?></dd>
-                                            <dt>Sexo</dt>
-                                            <dd><?php echo $postulante->sexo ?></dd>
-                                            <dt>Cedula de Identidad</dt>
-                                            <dd><?php echo $postulante->ci.' '.$postulante->expedido ?></dd>
-                                            <dt>Fecha de Nacimiento</dt>
-                                            <dd><?php echo date("d-m-Y",strtotime($postulante->fecha_nac)) ?></dd>
-                                            <dt>Nacionalidad</dt>
-                                            <dd><?php echo $postulante->nacionalidad ?></dd>
-                                            <dt>Estado Civil</dt>
-                                            <dd><?php echo $postulante->estado_civil ?></dd>
-                                            <dt>Libreta Militar</dt>
-                                            <dd><?php echo $postulante->libreta_militar ?></dd>
-                                            <dt>Empadronamiento</dt>
-                                            <dd><?php echo $postulante->empadronamiento ?></dd>
-                                            <dt>Parentesco</dt>
-                                            <dd><?php echo $postulante->parentesco ?></dd>
-                                        </dl>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="block">
-                                        <div class="block-title">
-                                            <h2><strong>Datos Referenciales</strong></h2>
-                                        </div>
-                                        <dl class="dl-horizontal">
-                                            <dt>Dirección Domicilio</dt>
-                                            <dd><?php echo $postulante->direccion ?></dd>
-                                            <dt>Teléfono</dt>
-                                            <dd><?php echo $postulante->telefono ?></dd>
-                                            <dt>Celular</dt>
-                                            <dd><?php echo $postulante->celular ?></dd>
-                                            <dt>Correo Electronico</dt>
-                                            <dd><?php echo $postulante->correo ?></dd>
-                                            <dt>Fax</dt>
-                                            <dd><?php echo $postulante->fax ?></dd>
-                                            <dt>Casilla de Correo</dt>
-                                            <dd><?php echo $postulante->casilla ?></dd>
-                                        </dl>
-                                        <div class="col-md-12 col-md-offset-3">
-                                            <!-- <button class="btn btn-sm btn-primary" type="button"></button> -->
-                                            <a href="/ppostulantes/edit/" class="btn btn-sm btn-primary">Modificar Datos Personales</a>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                        </div>
-                        <div id="advanced-dos" class="step">
-                            <div class="wizard-steps">
-                                <div class="row">
-                                    <div class="col-xs-1">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Lugar de Postulación</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->lugar_postulacion ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 done">
-                                        <span>Datos Personales</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Nombre(s) y Apellido(s)</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->nombre.' '.$postulante->app. ' '.$postulante->apm ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 active">
-                                        <span>Formación Academica</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Cedula de Identidad</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->ci.' '.$postulante->expedido ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Experiencia Laboral General</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Fecha de Nacimiento</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo date("d-m-Y",strtotime($postulante->fecha_nac)) ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Experiencia Relacionada al Cargo</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Nacionalidad</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->nacionalidad ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Cursos y Seminarios</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Estado Civil</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->estado_civil ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Manejo de Paquetes de Computación</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Libreta Militar</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->libreta_militar ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Idiomas</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Empadronamiento</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->empadronamiento ?>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Docencia</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Referencias Personales</span>
-                                    </div>
-                                    <div class="col-xs-1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group form-actions">
-                                <div class="col-xs-12">
-                                    <button class="btn btn-sm btn-primary" type="button" id="add_formacion"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
-                                    <button class="btn btn-sm btn-warning" type="button" id="edit_formacion"><i class="fa fa-pencil fa-fw"></i> Editar</button>
-                                    <button class="btn btn-sm btn-danger" type="button" id="delete_formacion"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
-                                </div>
-                            </div>
-                            
-                            <div class="table-responsive">
-                                <div id="jqxgridPformaciones"></div>
-                            </div>
-                        </div>
-             <div id="advanced-tres" class="step">
-                            <div class="wizard-steps">
-                                <div class="row">
-                                    <div class="col-xs-1">
-                                    </div>
-                                    <div class="col-xs-1 done">
-                                        <span>Datos Personales</span>
-                                    </div>
-                                    <div class="col-xs-1 done">
-                                        <span>Formación Academica</span>
-                                    </div>
-                                    <div class="col-xs-1 active">
-                                        <span>Experiencia Laboral General</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Experiencia Relacionada al Cargo</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Cursos y Seminarios</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Manejo de Paquetes de Computación</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Idiomas</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Docencia</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Referencias Personales</span>
-                                    </div>
-                                    <div class="col-xs-1">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Parentesco</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->parentesco ?>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group form-actions">
-                                <div class="col-xs-12">
-                                    <button class="btn btn-sm btn-primary" type="button" id="add_explabgeneral"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
-                                    <button class="btn btn-sm btn-warning" type="button" id="edit_explabgeneral"><i class="fa fa-pencil fa-fw"></i> Editar</button>
-                                    <button class="btn btn-sm btn-danger" type="button" id="delete_explabgeneral"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                            </div>  
+                            <div class="col-md-6">
+                                <div class="block">
+                                    <div class="block-title">
+                                        <h2><strong>Datos Referenciales</strong></h2>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Dirección Domicilio</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->direccion ?>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Teléfono o Número de Referencia</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->telefono ?>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Celular</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->celular ?>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Correo Electronico</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php echo $postulante->correo ?>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Fax</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php // echo $postulante->fax ?>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <dt class="pull-right">Casilla de Correo</dt>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <?php // echo $postulante->casilla ?>
+                                        </div>
+                                    </div>
+                                -->
+
+                                <br>
+                                <div class="col-md-12 col-md-offset-3">
+                                    <!-- <button class="btn btn-sm btn-primary" type="button"></button> -->
+                                    <a href="/ppostulantes/edit/" class="btn btn-sm btn-primary">Modificar Datos Personales</a>
                                 </div>
-                            </div>
-                            
-                            <div class="table-responsive">
-                                <div id="jqxgridPexplabgeneral"></div>
-                            </div>
-                        </div>
-                        <div id="advanced-cuatro" class="step">
-                            <div class="wizard-steps">
-                                <div class="row">
-                                    <div class="col-xs-1">
-                                    </div>
-                                    <div class="col-xs-1 done">
-                                        <span>Datos Personales</span>
-                                    </div>
-                                    <div class="col-xs-1 done">
-                                        <span>Formación Academica</span>
-                                    </div>
-                                    <div class="col-xs-1 done">
-                                        <span>Experiencia Laboral General</span>
-                                    </div>
-                                    <div class="col-xs-1 active">
-                                        <span>Experiencia Relacionada al Cargo</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Cursos y Seminarios</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Manejo de Paquetes de Computación</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Idiomas</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Docencia</span>
-                                    </div>
-                                    <div class="col-xs-1 ">
-                                        <span>Referencias Personales</span>
-                                    </div>
-                                    <div class="col-xs-1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group form-actions">
-                                <div class="col-xs-12">
-                                    <button class="btn btn-sm btn-primary" type="button" id="add_explabespecifica"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
-                                    <button class="btn btn-sm btn-warning" type="button" id="edit_explabespecifica"><i class="fa fa-pencil fa-fw"></i> Editar</button>
-                                    <button class="btn btn-sm btn-danger" type="button" id="delete_explabespecifica"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
-                                </div>
-                            </div>
-                            
-                            <div class="table-responsive">
-                                <div id="jqxgridPexplabespecifica"></div>
                             </div>
                         </div>
-            <!-- <div id="advanced-cuatro" class="step">
-                <div class="wizard-steps">
+                    </div>
+                </fieldset>
+                <fieldset title="Paso 2">
+                    <legend>Formación Academica</legend>
                     <div class="row">
-                        <div class="col-xs-2 done">
-                            <span>Datos Personales</span>
+                        <div class="form-group form-actions">
+                            <div class="col-xs-12">
+                                <button class="btn btn-sm btn-primary" type="button" id="add_formacion"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                                <button class="btn btn-sm btn-warning" type="button" id="edit_formacion"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                                <button class="btn btn-sm btn-danger" type="button" id="delete_formacion"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                            </div>
                         </div>
-                        <div class="col-xs-2 done">
-                            <span>Formación Academica</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Experiencia Laboral General</span>
-                        </div>
-                        <div class="col-xs-2 active">
-                            <span>Experiencia Relacionada al Cargo</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Cursos y Seminarios</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Manejo de Paquetes de Computación</span>
+
+                        <div class="table-responsive">
+                            <div id="jqxgridPformaciones"></div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="example-advanced-bio">Bio</label>
-                    <div class="col-md-8">
-                        <textarea id="example-advanced-bio" name="example-advanced-bio" rows="6" class="form-control" placeholder="Tell us your story.."></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="example-advanced-newsletter">Newsletter</label>
-                    <div class="col-md-6">
-                        <div class="checkbox">
-                            <label for="example-advanced-newsletter">
-                                <input type="checkbox" id="example-advanced-newsletter" name="example-advanced-newsletter" />  Sign up
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="advanced-cinco" class="step">
-                <div class="wizard-steps">
+                </fieldset>
+                <fieldset title="Paso 3">
+                    <legend>Experiencia Laboral General</legend>
                     <div class="row">
-                        <div class="col-xs-2 done">
-                            <span>Datos Personales</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Formación Academica</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Experiencia Laboral General</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Experiencia Relacionada al Cargo</span>
-                        </div>
-                        <div class="col-xs-2 active">
-                            <span>Cursos y Seminarios</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Manejo de Paquetes de Computación</span>
+                     <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_explabgeneral"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_explabgeneral"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_explabgeneral"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="example-advanced-bio">Bio</label>
-                    <div class="col-md-8">
-                        <textarea id="example-advanced-bio" name="example-advanced-bio" rows="6" class="form-control" placeholder="Tell us your story.."></textarea>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPexplabgeneral"></div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="example-advanced-newsletter">Newsletter</label>
-                    <div class="col-md-6">
-                        <div class="checkbox">
-                            <label for="example-advanced-newsletter">
-                                <input type="checkbox" id="example-advanced-newsletter" name="example-advanced-newsletter" />  Sign up
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="advanced-seis" class="step">
-                <div class="wizard-steps">
-                    <div class="row">
-                        <div class="col-xs-2 done">
-                            <span>Datos Personales</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Formación Academica</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Experiencia Laboral General</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Experiencia Relacionada al Cargo</span>
-                        </div>
-                        <div class="col-xs-2 done">
-                            <span>Cursos y Seminarios</span>
-                        </div>
-                        <div class="col-xs-2 active">
-                            <span>Manejo de Paquetes de Computación</span>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 4" style="display: block;">
+                <legend>Experiencia Relacionada al Cargo</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_explabespecifica"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_explabespecifica"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_explabespecifica"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="example-advanced-bio">Bio</label>
-                    <div class="col-md-8">
-                        <textarea id="example-advanced-bio" name="example-advanced-bio" rows="6" class="form-control" placeholder="Tell us your story.."></textarea>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPexplabespecifica"></div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="example-advanced-newsletter">Newsletter</label>
-                    <div class="col-md-6">
-                        <div class="checkbox">
-                            <label for="example-advanced-newsletter">
-                                <input type="checkbox" id="example-advanced-newsletter" name="example-advanced-newsletter" />  Sign up
-                            </label>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 5">
+                <legend>Cursos y Seminarios</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_curso"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_curso"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_curso"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
                         </div>
                     </div>
-                </div>
-            </div> -->
-            <div class="form-group form-actions">
-                <div class="col-md-12 col-md-offset-5">
-                    <input type="reset" class="btn btn-sm btn-warning" id="back2" value="Back" />
-                    <input type="submit" class="btn btn-sm btn-primary" id="next2" value="Next" />
-                </div>
-            </div>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPcurso"></div>
+                    </div>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 6">
+                <legend>Manejo de Paquetes de Computación</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_paquete"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_paquete"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_paquete"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPpaquete"></div>
+                    </div>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 7">
+                <legend>Idiomas</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_idioma"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_idioma"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_idioma"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPidioma"></div>
+                    </div>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 8">
+                <legend>Docencia</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_docencia"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_docencia"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_docencia"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPdocencia"></div>
+                    </div>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 9">
+                <legend>Referencias Laborales</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_referencia"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_referencia"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_referencia"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPreferencia"></div>
+                    </div>
+                </div> 
+            </fieldset>
+            <fieldset title="Paso 10">
+                <legend>Referencias Personales</legend>
+                <div class="row">
+                    <div class="form-group form-actions">
+                        <div class="col-xs-12">
+                            <button class="btn btn-sm btn-primary" type="button" id="add_referenciapersonal"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                            <button class="btn btn-sm btn-warning" type="button" id="edit_referenciapersonal"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="delete_referenciapersonal"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div id="jqxgridPreferenciapersonal"></div>
+                    </div>
+                </div> 
+            </fieldset>
+
+            <input type="submit" name="submit" onclick="return confirm('Esta seguro de de finalizar la postulación?. Una vez finalizada no podra realizar ningun cambio')" class="finish btn-success btn" title="Finalizar para guardar la postulación a un cargo" value="Finalizar Postulación" />
         </form>
     </div>
-</div>
 </div>
 </div>
 </div>
@@ -931,17 +338,23 @@ $('#testForm_pexplabespecifica').validate({
 
                 <input id="pformacion_id" name="pformacion_id" type="hidden" />
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Detalle</label>
+                    <label class="col-md-3 control-label" >Formación Academica</label>
                     <div class="col-md-9">
                         <?php echo $detalle ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Año</label>
+                    <label class="col-md-3 control-label" >Documento</label>
+                    <div class="col-md-9">
+                        <?php echo $documento ?>
+                    </div>
+                </div>
+             <!--    <div class="form-group">
+                    <label class="col-md-3 control-label" >Gestión</label>
                     <div class="col-md-9">
                         <?php echo $gestion ?>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label class="col-md-3 control-label" >Institución</label>
                     <div class="col-md-9">
@@ -1044,7 +457,7 @@ $('#testForm_pexplabespecifica').validate({
 </div>
 <!-- end  modal -->
 
-<!-- Modal Formacion  academica-->
+<!-- Modal Experencia laboral especifica-->
 <div class="modal fade" id="myModal_Pexplabespecifica" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1061,7 +474,7 @@ $('#testForm_pexplabespecifica').validate({
                     <div class="col-md-9">
                         <select name="pospue_explabesp" id="pospue_explabesp">
                             <?php foreach ($puestopostula as $v) { ?>
-                                <option value="<?php echo $v->id ?>"><?php echo $v->cargo ?></option>
+                            <option value="<?php echo $v->id ?>" proceso_contratacion_id="<?php echo $v->proceso_contratacion_id ?>"><?php echo $v->cargo ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -1097,10 +510,10 @@ $('#testForm_pexplabespecifica').validate({
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Breve descripción del Puesto</label>
+                    <label class="col-md-3 control-label" >Principales Funciones Desarrolladas</label>
                     <div class="col-md-9">
-                    <textarea id="desc_fun_explabesp" name="desc_fun_explabesp" class="form-control" placeholder="">                       
-                    </textarea>
+                        <textarea id="desc_fun_explabesp" name="desc_fun_explabesp" class="form-control" placeholder="">                       
+                        </textarea>
                     </div>
                 </div>
                 
@@ -1122,10 +535,274 @@ $('#testForm_pexplabespecifica').validate({
 </div>
 <!-- end  modal -->
 
-<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/vendor/jquery-1.11.0.min.js"%3E%3C/script%3E'));</script>
-<script>$(function(){ FormsWizard.init(); });</script>
+<!-- Modal Cursos o Seminarios-->
+<div class="modal fade" id="myModal_Pcurso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_pcurso" data-toggle="validator"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo_curso">Editar</h4>
+            </div>
+            <div class="modal-body">
+
+                <input id="pcurso_id" name="pcurso_id" type="hidden" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Gestión</label>
+                    <div class="col-md-9">
+                        <?php echo $gestion_curso ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Institución</label>
+                    <div class="col-md-9">
+                        <input id="institucion_curso" name="institucion_curso" type="text" class="form-control" placeholder="Ej.: Universidad Mayor de San Andres"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Nombre Curso</label>
+                    <div class="col-md-9">
+                        <input id="nombre_curso" name="nombre_curso" type="text" class="form-control" placeholder="Ej.: Electromecanica "/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Duración en Horas</label>
+                    <div class="col-md-9">
+                        <input id="duracion_hrs_curso" name="duracion_hrs_curso" type="number" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- end  modal -->
+
+<!-- Modal Aplicaciones y Paquetes de computacion-->
+<div class="modal fade" id="myModal_Ppaquete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_ppaquete" data-toggle="validator"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo_paquete">Editar</h4>
+            </div>
+            <div class="modal-body">
+
+                <input id="ppaquete_id" name="ppaquete_id" type="hidden" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Paquete o Aplicación</label>
+                    <div class="col-md-9">
+                        <input id="aplicacion_paquete" name="aplicacion_paquete" type="text" class="form-control" placeholder="Ej.: Auto Cad"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Nivel</label>
+                    <div class="col-md-9">
+                        <?php echo $nivel_paquete ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- end  modal -->
+
+<!-- Modal Idiomas-->
+<div class="modal fade" id="myModal_Pidioma" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_pidioma" data-toggle="validator"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo_idioma">Editar</h4>
+            </div>
+            <div class="modal-body">
+
+                <input id="pidioma_id" name="pidioma_id" type="hidden" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Idioma</label>
+                    <div class="col-md-9">
+                        <?php echo $idioma ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Lectura</label>
+                    <div class="col-md-9">
+                        <?php echo $lectura ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Escritura</label>
+                    <div class="col-md-9">
+                        <?php echo $escritura ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Conversación</label>
+                    <div class="col-md-9">
+                        <?php echo $conversacion ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- end  modal -->
+
+<!-- Modal Docencia-->
+<div class="modal fade" id="myModal_Pdocencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_pdocencia" data-toggle="validator"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo_docencia">Editar</h4>
+            </div>
+            <div class="modal-body">
+
+                <input id="pdocencia_id" name="pdocencia_id" type="hidden" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Gestión</label>
+                    <div class="col-md-9">
+                        <?php echo $gestion_docencia ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Institución</label>
+                    <div class="col-md-9">
+                       <input id="institucion_docencia" name="institucion_docencia" type="text" class="form-control" placeholder=""/>
+                   </div>
+               </div>
+               <div class="form-group">
+                <label class="col-md-3 control-label" >Asignatura</label>
+                <div class="col-md-9">
+                    <input id="materia_docencia" name="materia_docencia" type="text" class="form-control" placeholder=""/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" >Carga Horaria</label>
+                <div class="col-md-9">
+                    <input id="duracion_docencia" name="duracion_docencia" type="number" class="form-control" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+<!-- end  modal -->
+
+<!-- Modal Referencias-->
+<div class="modal fade" id="myModal_Preferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_preferencia" data-toggle="validator"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo_referencia">Editar</h4>
+            </div>
+            <div class="modal-body">
+
+                <input id="preferencia_id" name="preferencia_id" type="hidden" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Nombre(s) y Apellido(s)</label>
+                    <div class="col-md-9">
+                        <input id="nombres_y_apps_referencia" name="nombres_y_apps_referencia" type="text" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Institución</label>
+                    <div class="col-md-9">
+                       <input id="institucion_referencia" name="institucion_referencia" type="text" class="form-control" placeholder=""/>
+                   </div>
+               </div>
+               <div class="form-group">
+                <label class="col-md-3 control-label" >Cargo</label>
+                <div class="col-md-9">
+                    <input id="cargo_referencia" name="cargo_referencia" type="text" class="form-control" placeholder=""/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" >Teléfono</label>
+                <div class="col-md-9">
+                    <input id="telefono_referencia" name="telefono_referencia" type="number" class="form-control" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+<!-- end  modal -->
+
+<!-- Modal Referencias Personal-->
+<div class="modal fade" id="myModal_Preferenciapersonal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="testForm_preferenciapersonal" data-toggle="validator"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="titulo_referenciapersonal">Editar</h4>
+            </div>
+            <div class="modal-body">
+
+                <input id="preferenciapersonal_id" name="preferenciapersonal_id" type="hidden" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Nombre(s) y Apellido(s)</label>
+                    <div class="col-md-9">
+                        <input id="nombres_y_apps_referenciapersonal" name="nombres_y_apps_referenciapersonal" type="text" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" >Parentesco</label>
+                    <div class="col-md-9">
+                       <input id="parentesco_referenciapersonal" name="parentesco_referenciapersonal" type="text" class="form-control" placeholder=""/>
+                   </div>
+               </div>
+               <div class="form-group">
+                <label class="col-md-3 control-label" >Teléfono</label>
+                <div class="col-md-9">
+                    <input id="telefono_referenciapersonal" name="telefono_referenciapersonal" type="number" class="form-control" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+<!-- end  modal -->
+
+
 <style type="text/css">
-    .datepicker{
-        z-index:1151;
-    }
+    .datepicker{z-index:1151 !important;}
 </style>

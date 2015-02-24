@@ -8,6 +8,7 @@ use Phalcon\Db\Adapter\Pdo\PostgreSQL as DbAdapter;
 //use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
+use \Phalcon\Mvc\Dispatcher as PhDispatcher;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -60,7 +61,7 @@ $di->set('db', function () use ($config) {
         'username' => $config->database->username,
         'password' => $config->database->password,
         'dbname' => $config->database->dbname,
-      //  'charset' => $config->database->charset
+            //  'charset' => $config->database->charset
     ));
 });
 $di->set('sigec', function () {
@@ -85,7 +86,7 @@ $di->set('oracle', function () {
         (SERVER=dedicated)
         (SERVICE_NAME=central.oopp.gob.bo)
         )
-        )'           
+        )'
     ));
 });
 /**
@@ -104,7 +105,6 @@ $di->set('session', function () {
 
     return $session;
 });
-
 //Register the flash service with custom CSS classes
 $di->set('flash', function() {
     $flash = new \Phalcon\Flash\Direct(array(
@@ -123,3 +123,31 @@ $di->set('flashSession', function() {
     ));
     return $flash;
 });
+
+
+$di->set(
+        'dispatcher', function() use ($di) {
+
+    $evManager = $di->getShared('eventsManager');
+
+    $evManager->attach(
+            "dispatch:beforeException", function($event, $dispatcher, $exception) {
+        switch ($exception->getCode()) {
+            case PhDispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+            case PhDispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                $dispatcher->forward(
+                        array(
+                            'controller' => 'error',
+                            'action' => 'show404',
+                        )
+                );
+                return false;
+        }
+    }
+    );
+    $dispatcher = new PhDispatcher();
+    $dispatcher->setEventsManager($evManager);
+    return $dispatcher;
+}, true
+);
+

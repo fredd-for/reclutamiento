@@ -9,18 +9,18 @@ class PDF extends FPDF {
 
     function Header() {
         //Logo
-        $this->Image('img/escudo.png', 10, 8, 22);
+        $this->Image('assets/img/escudo.png', 10, 8, 22);
         //Arial bold 15
         $this->SetFont('Arial', '', 10);
         //Move to the right
         $this->Cell(55);
         //Title
         $this->Cell(90, 5, 'ESTADO PLURINACIONAL DE BOLIVIA', 'B', 0, 'C');
-        $this->Image('img/logo.png', 180, 8, 20);
+        $this->Image('assets/img/logo.png', 180, 8, 18);
         $this->Ln(6);
         $this->Cell(55);
-        $this->SetFont('Arial', '', 12);
-        $this->Cell(90, 5, 'MINISTERIO DE OBRAS PUBLICAS, SERVICIOS Y VIVIENDA', 0, 0, 'C');
+        $this->SetFont('Arial', '', 11);
+        $this->Cell(90, 5, 'EMPRESA ESTATAL DE TRANSPORTE POR CABLE MI TELEFERICO', 0, 0, 'C');
         //Line break
         $this->Ln(15);
     }

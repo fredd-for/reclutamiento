@@ -40,9 +40,9 @@
                         <a href="#?login-theme-3">
                             <img src="/assets/img/logo.png" alt="Mi Teleferico">
                         </a>
-                        <p>POSTULACION EN LINEA</p>
+                        <h4 class="label-primary">POSTULACIÓN EN LINEA</h4>
                     </div>
-                    <hr>
+
                     <div class="login-form">
                         <?php  echo $this->view->getContent(); ?>
                         
@@ -64,6 +64,11 @@
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     
     <script src="/assets/js/account.js"></script>
+    <script>
+    $(document).ready(function() {
+       $('#username').focus(); 
+    });
+    </script>
     <!-- END PAGE LEVEL SCRIPTS -->
 </body>
 

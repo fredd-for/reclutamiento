@@ -9,8 +9,10 @@ $loader->registerDirs(
     array(
         $config->application->controllersDir,
         $config->application->modelsDir,
-        //$config->application->phpexcel,
-        $config->application->fpdf
-        //$config->application->t_pdf
+        $config->application->phpexcel,
+        $config->application->fpdf,
+        $config->application->phpmailer,
+        $config->application->coolphpcaptcha,
+
     )
 )->register();

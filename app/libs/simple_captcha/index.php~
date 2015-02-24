@@ -1,0 +1,41 @@
+<?php
+session_start();
+$_SESSION = array();
+
+include("simple-php-captcha.php");
+// $_SESSION['captcha'] = simple_php_captcha();
+$cod_capcha = simple_php_captcha( array(
+	'min_length' => 6,
+	'max_length' => 6,
+	'characters' => 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghjkmnprstuvwxyz23456789',
+	'min_font_size' => 28,
+	'max_font_size' => 28,
+	'color' => '#0C2340',
+	'angle_min' => 0,
+	'angle_max' => 10,
+	'shadow' => true,
+	'shadow_color' => '#fff',
+	'shadow_offset_x' => -1,
+	'shadow_offset_y' => 1
+));
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example &raquo; A simple PHP CAPTCHA script</title>
+
+</head>
+<body>
+<pre>
+<?php
+print_r($cod_capcha);
+?>
+</pre>
+    <p>
+    	<?php
+    	echo '<img src="' . $cod_capcha['image_src'] . '" alt="CAPTCHA code">';
+    	?>
+    </p>
+</body>
+</html>

@@ -1,5 +1,8 @@
 <?php
-
+ require_once('../app/libs/phpmailer/class.phpmailer.php');
+ require_once('../app/libs/phpmailer/class.smtp.php');
+ 
+// require_once '../app/phpmailer/class.phpmailer.php';
 class LoginController extends \Phalcon\Mvc\Controller {
 
     //login  
@@ -33,28 +36,64 @@ class LoginController extends \Phalcon\Mvc\Controller {
     }
 
     public function passwordAction() {
-         $this->view->setMainView('login');
-        $this->view->setLayout('login');
-        if ($this->request->isPost()) {
+     $this->view->setMainView('login');
+     $this->view->setLayout('login');
+     if ($this->request->isPost()) {
+            $x=$this->session->get("captcha");
+        if (empty($_SESSION['captcha']) || trim(strtolower($_REQUEST['captcha'])) != $_SESSION['captcha']) {
+            $this->flashSession->error("<strong>Error: </strong>Codigo captcha invalido");
+        } else {
             $email = $this->request->getPost('email');                        
             //buscamos el mail
-            $user = usuarios::findFirst(
-                            array(
-                                "email = :email: AND habilitado= :estado:",
-                                "bind" => array('email' => $email, 'estado' => 1)
-            ));
+            $user = Ppostulantes::findFirst(
+                array(
+                    "correo = :email: AND baja_logica= :estado:",
+                    "bind" => array('email' => $email, 'estado' => 1)
+                    ));
             if ($user != false) {
-                //acutalizamos la cantidad de ingresos
-                $user->logins = $user->logins + 1;
-                $user->lastlogin = time();
-                $user->save();
-                $this->_registerSession($user);
-                $this->flashSession->success('Bienvenido <i>' . $user->nombre . '</i>');
-                $this->response->redirect('/dashboard');
+                $password=$this->_generarPass();
+                $user->password = $password;
+                if ($user->save()) {
+                    $destinatario = strtoupper($user->nombre).' '.strtoupper($user->app).' '.strtoupper($user->apm);
+                    $correo_destinatario=$user->correo;
+                    $contenido_html ='<p>Estimad@ '.$destinatario.', </p>
+                    <p>Acaba de actualizar su contraseña al sistema de postulación de la empresa "MI TELEFERICO".</p>
+                    <p><b>Usuario:</b> '.$correo_destinatario.'</p>
+                    <p><b>Contraseña:</b> '.$password.'</p><br>
+                    <p>http://convocatorias.miteleferico.bo/</p>';
+                    $contenido = 'Estimad@ '.$destinatario.', Acaba de realizar su registro correctamente al sistema de postulación de la empresa "MI TELEFERICO". Usuario: '.$correo_destinatario.' Contraseña: '.$password.' http://convocatorias.miteleferico.bo/';
+                    $mail = new PHPMailer();
+                    $mail->IsSMTP();
+                    $mail->SMTPAuth = true;
+                    $mail->SMTPSecure = "ssl";
+                    $mail->Host = "correo.miteleferico.bo";
+                    $mail->Port = 465;
+                    $mail->Username = "rrhh@miteleferico.bo";
+                    $mail->Password = "recursos442k15";
+                    $mail->From = "rrhh@miteleferico.bo";
+                    $mail->FromName = "\"MI TELEFERICO\" POSTULACION EN LINEA ";
+                    $mail->Subject = utf8_decode("Contraseña postulación en linea \"MI TELEFERICO\"");
+                    $mail->AltBody = $contenido;
+                    $mail->MsgHTML(utf8_decode($contenido_html));
+                    $mail->AddAddress($correo_destinatario, $destinatario);
+                    $mail->IsHTML(true);
+                    if(!$mail->Send()) {
+                      $this->flashSession->error("<strong>Error: </strong>El correo electronico no existe.");
+                  } else{
+                    $this->flashSession->success("<strong>Exito: </strong>Revise su correo electronico ".$correo_destinatario.", se le envio la contraseña para postularse. ");
+                }
+
+            }else{
+                $this->flashSession->error("<strong>Error: </strong>no se guardo el registro...");
             }
-            $this->flashSession->error('Email inexsitente en el sistema, o usuario No habilitado');
+            $this->response->redirect('/');
         }
+        $this->flashSession->error('Email inexsitente en el sistema, o usuario No habilitado');    
     }
+
+    
+}
+}
 //registro de la session
     private function _registerSession($user) {
         $this->session->set('auth', array(
@@ -77,6 +116,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
         //     $this->response->redirect('/');
         // }
         if ($this->request->isPost()) {
+            $password=$this->_generarPass();
             $resul = new Ppostulantes();
             $resul->nombre = strtoupper($this->request->getPost('nombre'));
             $resul->app = strtoupper($this->request->getPost('app'));
@@ -93,7 +133,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
             $resul->correo = $this->request->getPost('correo');
             $resul->fax = $this->request->getPost('fax');
             $resul->casilla = $this->request->getPost('casilla');
-            $resul->password = $this->_generarPass();
+            $resul->password = $password;
             $resul->lugar_postulacion = $this->request->getPost('lugar_postulacion');
             $resul->fecha_registro = date("Y-m-d H:i:s");
             $resul->estado = 0;
@@ -103,19 +143,44 @@ class LoginController extends \Phalcon\Mvc\Controller {
             $resul->nivel = 2;
             $resul->baja_logica = 1;
             if ($resul->save()) {
-                $resul2 = new Pposseguimientos();
-                $resul2->postulante_id=$resul->id;
-                $resul2->seguimiento_id = $this->request->getPost('seguimiento_id');
-                $resul2->estado = 0;
-                $resul2->baja_logica = 1;
-                $resul2->save();
-                $this->flashSession->success("<strong>Exito: </strong>Registro guardado correctamente.Revise su correo electronico, se le envio la contraseña para postularse. ");
+
+                $destinatario = strtoupper($this->request->getPost('nombre')).' '.strtoupper($this->request->getPost('app')).' '.strtoupper($this->request->getPost('apm'));
+                $correo_destinatario=$this->request->getPost('correo');
+                $contenido_html ='<p>Estimad@ '.$destinatario.', </p>
+                <p>Acaba de realizar su registro correctamente al sistema de postulación de la empresa "MI TELEFERICO".</p>
+                <p><b>Usuario:</b> '.$correo_destinatario.'</p>
+                <p><b>Contraseña:</b> '.$password.'</p><br>
+                <p>http://convocatorias.miteleferico.bo/</p>';
+                $contenido = 'Estimad@ '.$destinatario.', Acaba de realizar su registro correctamente al sistema de postulación de la empresa "MI TELEFERICO". Usuario: '.$correo_destinatario.' Contraseña: '.$password.' http://convocatorias.miteleferico.bo/';
+                $mail = new PHPMailer();
+                $mail->IsSMTP();
+                $mail->SMTPAuth = true;
+                $mail->SMTPSecure = "ssl";
+                $mail->Host = "correo.miteleferico.bo";
+                $mail->Port = 465;
+                $mail->Username = "rrhh@miteleferico.bo";
+                $mail->Password = "recursos442k15";
+                $mail->From = "rrhh@miteleferico.bo";
+                $mail->FromName = "\"MI TELEFERICO\" POSTULACION EN LINEA ";
+                $mail->Subject = utf8_decode("Contraseña postulación en linea \"MI TELEFERICO\"");
+                $mail->AltBody = $contenido;
+                $mail->MsgHTML(utf8_decode($contenido_html));
+                $mail->AddAddress($correo_destinatario, $destinatario);
+                $mail->IsHTML(true);
+
+                if(!$mail->Send()) {
+                  //echo "ERROR: " . $mail->ErrorInfo;
+                  $this->flashSession->error("<strong>Error: </strong>El correo electronico no existe.");
+                } else{
+                    $this->flashSession->success("<strong>Exito: </strong>Registro guardado correctamente.Revise su correo electronico ".$correo_destinatario.", se le envio la contraseña para postularse. Se le recomienda revisar tambien su bandeja de correo No deseado o Spams.");
+                }
+                
             }else{
                 $this->flashSession->error("<strong>Error: </strong>no se guardo el registro...");
             }
-            $this->response->redirect('/');
-        }
-        $this->view->setMainView('registrar');
+        $this->response->redirect('/');
+    }
+        //$this->view->setMainView('registrar');
         $this->view->setLayout('registrar');
         $model = new Ppostulantes();
         $resul= $model->cargosConvocatoria();
@@ -123,15 +188,71 @@ class LoginController extends \Phalcon\Mvc\Controller {
         // $this->view->setVar('pass', $pass);
     }
 
+    // public function pruebaAction()
+    // {
 
+    //     $destinatario = 'Luis Freddy'; //strtoupper($this->request->getPost('nombre')).' '.strtoupper($this->request->getPost('app')).' '.strtoupper($this->request->getPost('apm'));
+    //     $correo_destinatario='fredd_forzz@hotmail.com';
+    //     $contenido_html ="<b>Hola</b>";
+    //     $mail = new PHPMailer();
+    //     $mail->IsSMTP();
+    //     $mail->SMTPAuth = true;
+    //     $mail->SMTPSecure = "ssl";
+    //     $mail->Host = "correo.miteleferico.bo";
+    //     $mail->Port = 465;
+    //     $mail->Username = "rrhh@miteleferico.bo";
+    //     $mail->Password = "recursos442k15";
+    //     $mail->From = "rrhh@miteleferico.bo";
+    //     $mail->FromName = "\"MI TELEFERICO\" POSTULACION EN LINEA ";
+    //     $mail->Subject = utf8_decode("Contraseña postulacion en linea \"MI TELEFERICO\"");
+    //     $mail->AltBody = "Hola";
+    //     $mail->MsgHTML($contenido_html);
+    //     $mail->AddAddress($correo_destinatario, $destinatario);
+    //     $mail->IsHTML(true);
+    //     if(!$mail->Send()) {
+    //       echo "ERROR: " . $mail->ErrorInfo;
+    //       } else{
+    //     echo "Correo enviado correctamente";
+    //     }
+    // }
+
+    public function uniqueEmailAction()
+    {
+        $resul = Ppostulantes::findFirst(array('correo="'.$_POST['email'].'"'));
+        $msm = "";
+        if ($resul!=false) {
+            $msm = "Correo electronico ya existe.";
+        }
+        $this->view->disable();
+        echo $msm;
+    }
     private function _generarPass()
     {
         $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         $pass = "";
-        for($i=0;$i<10;$i++) {
+        for($i=0;$i<8;$i++) {
             $pass .= substr($str,rand(0,62),1);
         }
         return $pass;
     }
 
+    public function descargarAction()
+    {
+        $filename = 'file/convocatoria.pdf'; // of course find the exact filename....        
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+header('Cache-Control: private', false); // required for certain browsers 
+header('Content-Type: application/pdf');
+
+header('Content-Disposition: attachment; filename="'. basename($filename) . '";');
+header('Content-Transfer-Encoding: binary');
+header('Content-Length: ' . filesize($filename));
+
+readfile($filename);
+
+exit;
+}
+
+    
 }
