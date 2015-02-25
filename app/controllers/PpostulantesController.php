@@ -443,7 +443,7 @@ $gestion = $this->tag->selectStatic(
      $this->persistent->parameters = null;
     $this->assets
                 ->addCss('/jqwidgets/styles/jqx.base.css')
-                ->addCss('/media/plugins/form-daterangepicker/daterangepicker-bs3.css')
+                //->addCss('/media/plugins/form-daterangepicker/daterangepicker-bs3.css')
                 ->addCss('/jqwidgets/styles/jqx.custom.css')
                 
                 ;
@@ -517,50 +517,16 @@ $gestion = $this->tag->selectStatic(
         $this->flashSession->error("<strong>Error: </strong>no se guardo el registro...");
     }
     $this->response->redirect('/ppostulantes');
-     $this->assets
-                ->addCss('/jqwidgets/styles/jqx.base.css')
-                ->addCss('/media/plugins/form-daterangepicker/daterangepicker-bs3.css')
-                ->addCss('/jqwidgets/styles/jqx.custom.css')
-                
-                ;
-        $this->assets
-                ->addJs('/jqwidgets/jqxcore.js')
-                ->addJs('/jqwidgets/jqxmenu.js')
-                ->addJs('/jqwidgets/jqxdropdownlist.js')
-                ->addJs('/jqwidgets/jqxlistbox.js')
-                ->addJs('/jqwidgets/jqxcheckbox.js')
-                ->addJs('/jqwidgets/jqxscrollbar.js')
-                ->addJs('/jqwidgets/jqxgrid.js')
-                ->addJs('/jqwidgets/jqxdata.js')
-                ->addJs('/jqwidgets/jqxgrid.sort.js')
-                ->addJs('/jqwidgets/jqxgrid.pager.js')
-                ->addJs('/jqwidgets/jqxgrid.filter.js')
-                ->addJs('/jqwidgets/jqxgrid.selection.js')
-                ->addJs('/jqwidgets/jqxgrid.grouping.js')
-                ->addJs('/jqwidgets/jqxgrid.columnsreorder.js')
-                ->addJs('/jqwidgets/jqxgrid.columnsresize.js')
-                ->addJs('/jqwidgets/jqxdatetimeinput.js')
-                ->addJs('/jqwidgets/jqxcalendar.js')
-                ->addJs('/jqwidgets/jqxbuttons.js')
-                ->addJs('/jqwidgets/jqxdata.export.js')
-                ->addJs('/jqwidgets/jqxgrid.export.js')
-                ->addJs('/jqwidgets/globalization/globalize.js')
-                ->addJs('/jqwidgets/jqxgrid.aggregates.js')
-                ->addJs('/media/plugins/form-validation/jquery.validate.min.js')
-                ->addJs('/media/plugins/form-stepy/jquery.stepy.js')
-                ->addJs('/media/plugins/bootbox/bootbox.min.js')
-                ->addJs('/media/demo/demo-formwizard.js')
-                ->addJs('/scripts/ppostulacion/index.js')
-                // ->addJs('/media/plugins/fullcalendar/fullcalendar.min.js')
-                // ->addJs('/media/plugins/form-datepicker/js/bootstrap-datepicker.js')
-                // ->addJs('/media/plugins/form-daterangepicker/daterangepicker.js')
-                // ->addJs('/media/plugins/form-daterangepicker/moment.min.js')
-        ;
 }
+
+
+     
 
 $this->view->setVar('usuario', $this->_user);
 $resul = Ppostulantes::findFirstByid($this->_user->id);
 $this->view->setVar('postulante', $resul);
+
+
 }
 
 public function viewAction()
@@ -568,7 +534,9 @@ public function viewAction()
     $this->view->setVar('usuario', $this->_user);
     $resul = Ppostulantes::findFirstByid($this->_user->id);
     $this->view->setVar('postulante',$resul);
-    $resul = Pformaciones::find(array('baja_logica=1 and postulante_id='.$this->_user->id,'order' => 'id ASC'));
+    // $resul = Pformaciones::find(array('baja_logica=1 and postulante_id='.$this->_user->id,'order' => 'id ASC'));
+    $model = new Ppostulantes();
+    $resul = $model->listpformacion($this->_user->id);
     $this->view->setVar('formacion',$resul);
     $resul = Pexplabgenerales::find(array('baja_logica=1 and postulante_id='.$this->_user->id,'order' => 'id ASC'));
     $this->view->setVar('explabgeneral',$resul);

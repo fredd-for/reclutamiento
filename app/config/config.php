@@ -8,9 +8,9 @@ return new \Phalcon\Config(array(
         'password'    => 'r0salinda',
         'dbname'      => 'bd_rrhh',
        */
-        'host'        => '192.168.10.158',
-        'username'    => 'postgres',
-        'password'    => 'miteleferico123',
+        'host'        => 'localhost',
+        'username'    => 'user_rrhh',
+        'password'    => 'pass_rrhh',
         'dbname'      => 'bd_rrhh',
         
     ),

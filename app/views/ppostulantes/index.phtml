@@ -23,16 +23,16 @@
                                     <div class="block-title">
                                         <h2><strong>Datos Personales</strong></h2>
                                     </div>
-                                    <div class="row">
+                                   <!--  <div class="row">
                                         <div class="col-md-5">
                                             <dt class="pull-right">Puesto al que Postula</dt>
                                         </div>
                                         <div class="col-md-7">
-                                            <?php foreach ($puestopostula as $v) { ?>
-                                            <dd><?php echo $v->cargo ?></dd>    
-                                            <?php } ?>
+                                            <?php // foreach ($puestopostula as $v) { ?>
+                                            <dd><?php // echo $v->cargo ?></dd>    
+                                            <?php // } ?>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="row">
                                         <div class="col-md-5">
@@ -374,7 +374,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Fecha Emisión</label>
+                    <label class="col-md-3 control-label" >Fecha Emisiónxx</label>
                     <div class="col-md-9">
                         <input type="text" id="fecha_emision" name="fecha_emision" value="<?php echo date("d-m-Y") ?>" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" />
                     </div>
@@ -472,7 +472,7 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label" >Para el Puesto</label>
                     <div class="col-md-9">
-                        <select name="pospue_explabesp" id="pospue_explabesp">
+                        <select name="pospue_explabesp" id="pospue_explabesp" class='form-control'>
                             <?php foreach ($puestopostula as $v) { ?>
                             <option value="<?php echo $v->id ?>" proceso_contratacion_id="<?php echo $v->proceso_contratacion_id ?>"><?php echo $v->cargo ?></option>
                             <?php } ?>

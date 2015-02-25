@@ -1,6 +1,6 @@
 $(document).ready(function () {
         /***********AJAX FORMACION ACADEMICA**************/
-        
+        //$("#masked_date").mask("99/99/9999");
         cargarPformaciones();   
         function cargarPformaciones(){
             var source =

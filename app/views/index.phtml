@@ -22,13 +22,17 @@
 
         <!-- The following CSS are included as plugins and can be removed if unused-->
 
-        <link rel='stylesheet' type='text/css' href='/media/plugins/form-daterangepicker/daterangepicker-bs3.css' /> 
-        <link rel='stylesheet' type='text/css' href='/media/plugins/fullcalendar/fullcalendar.css' /> 
+        <!-- <link rel='stylesheet' type='text/css' href='/media/plugins/form-daterangepicker/daterangepicker-bs3.css' />  -->
+        <!-- <link rel='stylesheet' type='text/css' href='/media/plugins/fullcalendar/fullcalendar.css' />  -->
         <link rel='stylesheet' type='text/css' href='/media/plugins/form-markdown/css/bootstrap-markdown.min.css' /> 
-        <link rel='stylesheet' type='text/css' href='/media/js/jqueryui.css' />
-        <link rel='stylesheet' type='text/css' href='/media/plugins/form-daterangepicker/daterangepicker-bs3.css' />
+        <!-- <link rel='stylesheet' type='text/css' href='/media/js/jqueryui.css' /> -->
+        <!-- <link rel='stylesheet' type='text/css' href='/media/plugins/form-daterangepicker/daterangepicker-bs3.css' /> -->
         <link rel='stylesheet' type='text/css' href='/media/plugins/codeprettifier/prettify.css' /> 
         <link rel='stylesheet' type='text/css' href='/media/plugins/form-toggle/toggles.css' /> 
+        <link rel='stylesheet' type='text/css' href='/js/datepicker/datepicker.css' /> 
+        <link rel='stylesheet' type='text/css' href='/js/datatables/dataTables.bootstrap.css' /> 
+        <link rel='stylesheet' type='text/css' href='/js/jqwidgets/styles/jqx.base.css' /> 
+
 
 <!-- <script type="text/javascript" src="/media/js/less.js"></script> -->
         <?php $this->assets->outputCss(); ?>
@@ -46,12 +50,7 @@
         <script type='text/javascript' src='/media/js/application.js'></script> 
         <script type='text/javascript' src='/media/demo/demo.js'></script> 
 
-                <script type='text/javascript' src='/media/plugins/fullcalendar/fullcalendar.min.js'></script> 
-        <script type='text/javascript' src='/media/plugins/form-datepicker/js/bootstrap-datepicker.js'></script> 
-        <script type='text/javascript' src='/media/plugins/form-daterangepicker/daterangepicker.js'></script> 
-        <script type='text/javascript' src='/media/plugins/form-daterangepicker/moment.min.js'></script> 
-
-<?php echo $this->assets->outputJs(); ?> 
+        
         
 
     </head>
@@ -153,13 +152,32 @@
         <script>!window.jQuery && document.write(unescape('%3Cscript src="/media/js/jquery-1.10.2.min.js"%3E%3C/script%3E'))</script>
         <script type="text/javascript">!window.jQuery.ui && document.write(unescape('%3Cscript src="/media/js/jqueryui-1.10.3.min.js'))</script>
         -->
-
+<!-- <script type='text/javascript' src='/media/plugins/fullcalendar/fullcalendar.min.js'></script>  -->
+        
+         <script type='text/javascript' src='/media/plugins/form-daterangepicker/daterangepicker.js'></script> 
+         <script type='text/javascript' src='/media/plugins/form-daterangepicker/moment.min.js'></script> 
+         <script type='text/javascript' src='/media/plugins/form-datepicker/js/bootstrap-datepicker.js'></script> 
+         <script type='text/javascript' src='/media/plugins/bootbox/bootbox.min.js'></script>
+        
+<?php echo $this->assets->outputJs(); ?> 
         
         <script type="text/javascript">
             $().ready(function () {
-                $('#myModal_rep').modal('show');    
+
+
+            //      bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de eliminar el registro.", function(result) {
+            // if (result==false) {
+            //     document.location.href = "/login/";
+            // }
+            // });  
+              
+                 $('#myModal_rep').modal('show');    
+
+
+
                 $("#correo").blur(function() {
-                 var v=$.ajax({
+                    if($("#id").val()==''){
+                        var v=$.ajax({
                     url:'/login/uniqueEmail/',
                     type:'POST',
                     datatype: 'json',
@@ -172,7 +190,9 @@
                         }
                                                 }, //mostramos el error
                                                 error: function() { alert('Se ha producido un error Inesperado'); }
-                                            }); 
+                                            });        
+                    }
+                 
                 });
 
                 $("#sexo").change(function() {

@@ -171,22 +171,22 @@ class LoginController extends \Phalcon\Mvc\Controller {
                 if(!$mail->Send()) {
                   //echo "ERROR: " . $mail->ErrorInfo;
                   $this->flashSession->error("<strong>Error: </strong>El correo electronico no existe.");
-                } else{
-                    $this->flashSession->success("<strong>Exito: </strong>Registro guardado correctamente.Revise su correo electronico ".$correo_destinatario.", se le envio la contraseña para postularse. Se le recomienda revisar tambien su bandeja de correo No deseado o Spams.");
-                }
-                
-            }else{
-                $this->flashSession->error("<strong>Error: </strong>no se guardo el registro...");
+              } else{
+                $this->flashSession->success("<strong>Exito: </strong>Registro guardado correctamente.Revise su correo electronico ".$correo_destinatario.", se le envio la contraseña para postularse. Se le recomienda revisar tambien su bandeja de correo No deseado o Spams.");
             }
+            
+        }else{
+            $this->flashSession->error("<strong>Error: </strong>no se guardo el registro...");
+        }
         $this->response->redirect('/');
     }
         //$this->view->setMainView('registrar');
-        $this->view->setLayout('registrar');
-        $model = new Ppostulantes();
-        $resul= $model->cargosConvocatoria();
-        $this->view->setVar('cargos', $resul);
+    $this->view->setLayout('registrar');
+    $model = new Ppostulantes();
+    $resul= $model->cargosConvocatoria();
+    $this->view->setVar('cargos', $resul);
         // $this->view->setVar('pass', $pass);
-    }
+}
 
     // public function pruebaAction()
     // {
@@ -238,21 +238,18 @@ class LoginController extends \Phalcon\Mvc\Controller {
 
     public function descargarAction()
     {
-        $filename = 'file/convocatoria.pdf'; // of course find the exact filename....        
+        $filename = 'file/convocatoria.pdf';
         header('Pragma: public');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-header('Cache-Control: private', false); // required for certain browsers 
-header('Content-Type: application/pdf');
-
-header('Content-Disposition: attachment; filename="'. basename($filename) . '";');
-header('Content-Transfer-Encoding: binary');
-header('Content-Length: ' . filesize($filename));
-
-readfile($filename);
-
-exit;
-}
+        header('Cache-Control: private', false);
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="'. basename($filename) . '";');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($filename));
+        readfile($filename);
+        exit;
+    }
 
     
 }

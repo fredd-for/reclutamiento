@@ -48,7 +48,7 @@
 <div class="panel panel-primary">
     <div class="panel-body" style="padding-top:2px">
         <form action="" method="post">
-        <input type="hidden" name="id" value="<?php echo $postulante->id ?>">
+        <input type="hidden" name="id" id="id" value="<?php echo $postulante->id ?>">
             <div class="row">
                 <div class="col-md-7">
                     <div class="panel panel-primary">
@@ -236,6 +236,9 @@
             </form>
         </div>
     </div>  
-    <style type="text/css">
+<script type="text/javascript">
+    //$('#fecha_nac').datepicker();
+</script>
+<style type="text/css">
     .datepicker{z-index:1151 !important;}
 </style>

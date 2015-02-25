@@ -56,6 +56,7 @@ class ControllerBase extends Controller {
                     ->addJs('/assets/js/vendor/bootstrap.min.js')
                     ->addJs('/assets//js/plugins.js')
                     ->addJs('/assets/js/app.js')
+                    ->addJs('/js/datepicker/bootstrap-datepicker.js')
                     //  ->addJs('/assets/js/helpers/gmaps.min.js')
                     ->addJs('/js/app.plugin.js')
                     //  ->addJs('/js/jquery-ui-1.9.0.custom.min.js')
