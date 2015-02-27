@@ -44,7 +44,7 @@ class PpostulantesController extends ControllerRrhh {
                 $resul2->baja_logica = 1; 
                 if ($resul2->save()) {
                     $model = new Ppostulantes();
-                    $resul3 = $model->cerrarExpEspecifica($v->proceso_contratacion_id);
+                    $resul3 = $model->cerrarExpEspecifica($v->proceso_contratacion_id,$this->_user->id);
                     $this->flashSession->success("Exito: Usted termino correctamente su postulación...");
                 }else{
                     $this->flashSession->error("Error: no se guardo el registro...");
@@ -769,7 +769,7 @@ public function savePexplabespecificaAction()
             $resul->seguimiento_id = $_POST['seguimiento_id'];
             $resul->proceso_contratacion_id = $_POST['proceso_contratacion_id'];
             $resul->doc_respaldo = $_POST['doc_respaldo'];
-                // $resul->baja_logica = 1;
+            $resul->estado = 0;
             if ($resul->save()) {
                 $msm = 'Exito: Se guardo correctamente';
             }else{

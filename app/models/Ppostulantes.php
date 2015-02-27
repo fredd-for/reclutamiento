@@ -283,9 +283,9 @@ class Ppostulantes extends \Phalcon\Mvc\Model
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
     }
 
-    public function cerrarExpEspecifica($proceso_contratacion_id='')
+    public function cerrarExpEspecifica($proceso_contratacion_id='',$postulante_id='')
     {
-        $sql="UPDATE pexplabespecificas SET estado = 1 WHERE proceso_contratacion_id ='$proceso_contratacion_id' ";
+        $sql="UPDATE pexplabespecificas SET estado = 1 WHERE proceso_contratacion_id ='$proceso_contratacion_id' and postulante_id = $postulante_id";
         $this->_db = new Procesoscontrataciones();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
     }
