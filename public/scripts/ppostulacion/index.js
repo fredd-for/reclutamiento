@@ -1413,3 +1413,6 @@ $('#testForm_preferenciapersonal').validate({
 
 
 $('#fecha_emision').datepicker();
+
+//$('#paso4').click(false);
+//$("#paso4").unbind("click");

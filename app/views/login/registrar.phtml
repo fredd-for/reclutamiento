@@ -221,10 +221,37 @@
             </div> -->
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="col-md-12" >
-                    <p>Este Formulario representa o tiene carácter de Declaración Jurada para los fines legales correspondientes.</p>
-                    <p>En caso de que mi postulación sea adjudicada, me comprometo a presentar toda la documentación en original o fotocopia legalizada, aceptando que el incumplimiento es causal de descalificación.</p>
-                    </label>
+                <?php  if(count($cargos)>0){ ?>
+                    <div class="alert alert-info alert-dismissable">
+                    <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+                    <h4>
+                        <i class="fa fa-info-circle"></i>
+                        Información
+                    </h4>
+                    Usted se puede postular a los siguientes cargos.
+                    <?php  foreach ($cargos as $v) { ?>
+                    <dd><?php  echo $v->cargo ?></dd>
+                    <?php  } ?>
+                    <!-- <a class="alert-link" href="javascript:void(0)">day</a>
+                    ! -->
+                </div>
+                <?php }else{ ?>
+                <div class="alert alert-warning alert-dismissable">
+                    <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+                    <h4>
+                        <i class="fa fa-info-circle"></i>
+                        Información
+                    </h4>
+                    Estimado Postulante. Actualmente no hay ningun cargo dentro la convocatoria. Pero usted puede realizar el registro y llenado de su postulación para pasas por el proceso de selección, para futuras convocatorias.
+                    <!-- <a class="alert-link" href="javascript:void(0)">day</a>
+                    ! -->
+                </div>
+                <?php } ?>
+                
+                <label class="col-md-12" >
+                    <h6>Este Formulario representa o tiene carácter de Declaración Jurada para los fines legales correspondientes.</h6>
+                    <h6>En caso de que mi postulación sea adjudicada, me comprometo a presentar toda la documentación en original o fotocopia legalizada, aceptando que el incumplimiento es causal de descalificación.</h6>
+                    </label>    
                 </div>
                 
             </div>

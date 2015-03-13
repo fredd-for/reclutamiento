@@ -28,8 +28,9 @@ class PpostulantesController extends ControllerRrhh {
         $resul = $model->convocatoriasPostuladas($this->_user->id);
         $resulReferenciaLaboral = Preferencias::find(array("postulante_id='".$this->_user->id."' and baja_logica=1"));
         $resulReferenciaPersonal = Preferenciaspersonales::find(array("postulante_id='".$this->_user->id."' and baja_logica=1"));
+        $c = $_POST['nro_puestos'];
         if (count($resul)<1) {
-            $this->flashSession->error("PASO 4: Debe registrar minimo una Experiencia Relacionado al Cargo");
+            $this->flashSession->error("PASO 4: Debe registrar minimo una Experiencia Relacionado al Cargo".$c);
         }elseif (count($resulReferenciaLaboral)<2) {
             $this->flashSession->error("PASO 9: Debe registrar minimo dos referencias laborales");
         }elseif (count($resulReferenciaPersonal)<2) {
@@ -1215,6 +1216,7 @@ public function deletePreferenciapersonalAction(){
 /*
 end Referencia Personal
  */
+
 
 
 }

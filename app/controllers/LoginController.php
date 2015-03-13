@@ -185,6 +185,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
     $model = new Ppostulantes();
     $resul= $model->cargosConvocatoria();
     $this->view->setVar('cargos', $resul);
+
         // $this->view->setVar('pass', $pass);
 }
 
@@ -251,5 +252,44 @@ class LoginController extends \Phalcon\Mvc\Controller {
         exit;
     }
 
-    
+    public function visionAction()
+    {
+        $this->view->setLayout('vision');
+    }
+
+    public function objetivoAction()
+    {
+        $this->view->setLayout('vision');
+    }
+
+    public function principioAction()
+    {
+        $this->view->setLayout('vision');
+    }
+
+    public function cargosAction()
+    {
+        $model = new Ppostulantes();
+        $resul= $model->convocatorias();
+        $this->view->setVar('convocatoria', $resul);
+        $this->view->setLayout('cargos');
+
+        
+    }
+
+    // public function descargarAction($archivo_id)
+    // {
+    //     $resul = Archivos::findFirstById($archivo_id);
+    //     $filename = 'http://rrhh.local/'.$resul->carpeta.$resul->nombre_archivo;
+    //     header('Pragma: public');
+    //     header('Expires: 0');
+    //     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    //     header('Cache-Control: private', false);
+    //     header('Content-Type: '.$resul->tipo_archivo);
+    //     header('Content-Disposition: attachment; filename="'. basename(substr($resul->nombre_archivo, 15)) . '";');
+    //     header('Content-Transfer-Encoding: binary');
+    //     header('Content-Length: ' . filesize($filename));
+    //     readfile($filename);
+    //     exit;
+    // }
 }

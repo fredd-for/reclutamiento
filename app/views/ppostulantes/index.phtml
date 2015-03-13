@@ -36,7 +36,7 @@
 
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <dt class="pull-right">Lugar de Postulación</dt>
+                                            <dt class="pull-right">Lugar de Postulaci&oacute;n</dt>
                                         </div>
                                         <div class="col-md-7">
                                             <?php echo $postulante->lugar_postulacion ?>
@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <dt class="pull-right">Dirección Domicilio</dt>
+                                            <dt class="pull-right">Direcci&oacute;n Domicilio</dt>
                                         </div>
                                         <div class="col-md-7">
                                             <?php echo $postulante->direccion ?>
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <dt class="pull-right">Teléfono o Número de Referencia</dt>
+                                            <dt class="pull-right">Tel&eacute;fono o Número de Referencia</dt>
                                         </div>
                                         <div class="col-md-7">
                                             <?php echo $postulante->telefono ?>
@@ -173,7 +173,7 @@
                     </div>
                 </fieldset>
                 <fieldset title="Paso 2">
-                    <legend>Formación Academica</legend>
+                    <legend>Formaci&oacute;n Academica</legend>
                     <div class="row">
                         <div class="form-group form-actions">
                             <div class="col-xs-12">
@@ -204,7 +204,13 @@
                     </div>
                 </div> 
             </fieldset>
-            <fieldset title="Paso 4" style="display: block;">
+            <?php 
+            $desabilitar = '';
+            if (count($puestopostula)<=0) { 
+                $desabilitar = 'disabled';
+            }
+            ?>          
+            <fieldset title="Paso 4" <?php echo $desabilitar ?>>
                 <legend>Experiencia Relacionada al Cargo</legend>
                 <div class="row">
                     <div class="form-group form-actions">
@@ -214,12 +220,30 @@
                             <button class="btn btn-sm btn-danger" type="button" id="delete_explabespecifica"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
                         </div>
                     </div>
+                </div>
 
+                <?php if (count($puestopostula)<=0) { ?>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="alert alert-warning alert-dismissable">
+                            <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+                            <h4>
+                                <i class="fa fa-info-circle"></i>
+                                Información
+                            </h4>
+                            Estimado Postulante. Actualmente no hay ningun cargo dentro la convocatoria. Pero usted puede realizar el registro y llenado de su postulación para pasas por el proceso de selección, para futuras convocatorias.
+                        </div>    
+                    </div>
+                </div>
+                <?php } ?>
+                <div class="row">
                     <div class="table-responsive">
+                        <input type="text" name="nro_puestos" value="<?php echo count($puestopostula) ?>">
                         <div id="jqxgridPexplabespecifica"></div>
                     </div>
                 </div> 
             </fieldset>
+          
             <fieldset title="Paso 5">
                 <legend>Cursos y Seminarios</legend>
                 <div class="row">
@@ -237,7 +261,7 @@
                 </div> 
             </fieldset>
             <fieldset title="Paso 6">
-                <legend>Manejo de Paquetes de Computación</legend>
+                <legend>Manejo de Paquetes de Computaci&oacute;n</legend>
                 <div class="row">
                     <div class="form-group form-actions">
                         <div class="col-xs-12">
@@ -317,7 +341,7 @@
                 </div> 
             </fieldset>
 
-            <input type="submit" name="submit" onclick="return confirm('Esta seguro de de finalizar la postulación?. Una vez finalizada no podra realizar ningun cambio')" class="finish btn-success btn" title="Finalizar para guardar la postulación a un cargo" value="Finalizar Postulación" />
+            <input type="submit" name="submit" onclick="return confirm('Esta seguro de de finalizar la postulaci&oacute;n?. Una vez finalizada no podra realizar ningun cambio')" class="finish btn-success btn" title="Finalizar para guardar la postulaci&oacute;n a un cargo" value="Finalizar Postulaci&oacute;n" />
         </form>
     </div>
 </div>
@@ -338,7 +362,7 @@
 
                 <input id="pformacion_id" name="pformacion_id" type="hidden" />
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Formación Academica</label>
+                    <label class="col-md-3 control-label" >Formaci&oacute;n Academica</label>
                     <div class="col-md-9">
                         <?php echo $detalle ?>
                     </div>
@@ -350,13 +374,13 @@
                     </div>
                 </div>
              <!--    <div class="form-group">
-                    <label class="col-md-3 control-label" >Gestión</label>
+                    <label class="col-md-3 control-label" >Gesti&oacute;n</label>
                     <div class="col-md-9">
                         <?php echo $gestion ?>
                     </div>
                 </div> -->
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Institución</label>
+                    <label class="col-md-3 control-label" >Instituci&oacute;n</label>
                     <div class="col-md-9">
                         <input id="institucion" name="institucion" type="text" class="form-control" placeholder="Ej.: Universidad Mayor de San Andres"/>
                     </div>
@@ -374,7 +398,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Fecha Emisiónxx</label>
+                    <label class="col-md-3 control-label" >Fecha Emisi&oacute;nxx</label>
                     <div class="col-md-9">
                         <input type="text" id="fecha_emision" name="fecha_emision" value="<?php echo date("d-m-Y") ?>" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" />
                     </div>
@@ -428,7 +452,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Empresa o Institución</label>
+                    <label class="col-md-3 control-label" >Empresa o Instituci&oacute;n</label>
                     <div class="col-md-9">
                         <input id="empresa" name="empresa" type="text" class="form-control" placeholder=""/>
                     </div>
@@ -504,7 +528,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Empresa o Institución</label>
+                    <label class="col-md-3 control-label" >Empresa o Instituci&oacute;n</label>
                     <div class="col-md-9">
                         <input id="institucion_explabesp" name="institucion_explabesp" type="text" class="form-control" placeholder=""/>
                     </div>
@@ -548,13 +572,13 @@
 
                 <input id="pcurso_id" name="pcurso_id" type="hidden" />
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Gestión</label>
+                    <label class="col-md-3 control-label" >Gesti&oacute;n</label>
                     <div class="col-md-9">
                         <?php echo $gestion_curso ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Institución</label>
+                    <label class="col-md-3 control-label" >Instituci&oacute;n</label>
                     <div class="col-md-9">
                         <input id="institucion_curso" name="institucion_curso" type="text" class="form-control" placeholder="Ej.: Universidad Mayor de San Andres"/>
                     </div>
@@ -566,7 +590,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Duración en Horas</label>
+                    <label class="col-md-3 control-label" >Duraci&oacute;n en Horas</label>
                     <div class="col-md-9">
                         <input id="duracion_hrs_curso" name="duracion_hrs_curso" type="number" class="form-control" placeholder=""/>
                     </div>
@@ -596,7 +620,7 @@
 
                 <input id="ppaquete_id" name="ppaquete_id" type="hidden" />
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Paquete o Aplicación</label>
+                    <label class="col-md-3 control-label" >Paquete o Aplicaci&oacute;n</label>
                     <div class="col-md-9">
                         <input id="aplicacion_paquete" name="aplicacion_paquete" type="text" class="form-control" placeholder="Ej.: Auto Cad"/>
                     </div>
@@ -650,7 +674,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Conversación</label>
+                    <label class="col-md-3 control-label" >Conversaci&oacute;n</label>
                     <div class="col-md-9">
                         <?php echo $conversacion ?>
                     </div>
@@ -680,13 +704,13 @@
 
                 <input id="pdocencia_id" name="pdocencia_id" type="hidden" />
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Gestión</label>
+                    <label class="col-md-3 control-label" >Gesti&oacute;n</label>
                     <div class="col-md-9">
                         <?php echo $gestion_docencia ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Institución</label>
+                    <label class="col-md-3 control-label" >Instituci&oacute;n</label>
                     <div class="col-md-9">
                        <input id="institucion_docencia" name="institucion_docencia" type="text" class="form-control" placeholder=""/>
                    </div>
@@ -733,7 +757,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" >Institución</label>
+                    <label class="col-md-3 control-label" >Instituci&oacute;n</label>
                     <div class="col-md-9">
                        <input id="institucion_referencia" name="institucion_referencia" type="text" class="form-control" placeholder=""/>
                    </div>
@@ -745,7 +769,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-3 control-label" >Teléfono</label>
+                <label class="col-md-3 control-label" >Tel&eacute;fono</label>
                 <div class="col-md-9">
                     <input id="telefono_referencia" name="telefono_referencia" type="number" class="form-control" placeholder=""/>
                 </div>
@@ -786,7 +810,7 @@
                    </div>
                </div>
                <div class="form-group">
-                <label class="col-md-3 control-label" >Teléfono</label>
+                <label class="col-md-3 control-label" >Tel&eacute;fono</label>
                 <div class="col-md-9">
                     <input id="telefono_referenciapersonal" name="telefono_referenciapersonal" type="number" class="form-control" placeholder=""/>
                 </div>
@@ -805,4 +829,5 @@
 
 <style type="text/css">
     .datepicker{z-index:1151 !important;}
+    
 </style>
