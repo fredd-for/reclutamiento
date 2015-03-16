@@ -238,7 +238,7 @@
                 <?php } ?>
                 <div class="row">
                     <div class="table-responsive">
-                        <input type="text" name="nro_puestos" value="<?php echo count($puestopostula) ?>">
+                        <input type="hidden" name="nro_puestos" value="<?php echo count($puestopostula) ?>">
                         <div id="jqxgridPexplabespecifica"></div>
                     </div>
                 </div> 
@@ -341,7 +341,9 @@
                 </div> 
             </fieldset>
 
-            <input type="submit" name="submit" onclick="return confirm('Esta seguro de de finalizar la postulaci&oacute;n?. Una vez finalizada no podra realizar ningun cambio')" class="finish btn-success btn" title="Finalizar para guardar la postulaci&oacute;n a un cargo" value="Finalizar Postulaci&oacute;n" />
+            <!-- <input type="submit" name="submit" onclick="return confirm('Esta seguro de de finalizar la postulaci&oacute;n?. Una vez finalizada no podra realizar ningun cambio')" class="finish btn-success btn" title="Finalizar para guardar la postulaci&oacute;n a un cargo" value="Finalizar Postulaci&oacute;n" /> -->
+
+            <input type="submit" name="submit" class="finish btn-success btn" title="Finalizar para guardar la postulaci&oacute;n a un cargo" value="Finalizar Postulaci&oacute;n" />
         </form>
     </div>
 </div>

@@ -28,58 +28,58 @@ class PpostulantesController extends ControllerRrhh {
         $resul = $model->convocatoriasPostuladas($this->_user->id);
         $resulReferenciaLaboral = Preferencias::find(array("postulante_id='".$this->_user->id."' and baja_logica=1"));
         $resulReferenciaPersonal = Preferenciaspersonales::find(array("postulante_id='".$this->_user->id."' and baja_logica=1"));
-        $c = $_POST['nro_puestos'];
-        if (count($resul)<1) {
-            $this->flashSession->error("PASO 4: Debe registrar minimo una Experiencia Relacionado al Cargo".$c);
-        }elseif (count($resulReferenciaLaboral)<2) {
+        //$c = $_POST['nro_puestos'];
+        /*if (count($resul)<1) {
+            $this->flashSession->error("PASO 4: Debe registrar minimo una Experiencia Relacionado al Cargo");
+        }else*/
+        if (count($resulReferenciaLaboral)<2) {
             $this->flashSession->error("PASO 9: Debe registrar minimo dos referencias laborales");
         }elseif (count($resulReferenciaPersonal)<2) {
             $this->flashSession->error("PASO 10: Debe registrar minimo dos referencias personales");
         }else{
-            foreach ($resul as $v) {
-                $resul2 = new Pposcontrataciones();
-                $resul2->postulante_id = $this->_user->id;
-                $resul2->proceso_contratacion_id = $v->proceso_contratacion_id;
-                $resul2->fecha_cierre = date("Y-m-d H:i:s");
-                $resul2->estado = 1;
-                $resul2->baja_logica = 1; 
-                if ($resul2->save()) {
-                    $model = new Ppostulantes();
-                    $resul3 = $model->cerrarExpEspecifica($v->proceso_contratacion_id,$this->_user->id);
-                    $this->flashSession->success("Exito: Usted termino correctamente su postulación...");
-                }else{
-                    $this->flashSession->error("Error: no se guardo el registro...");
-                }
+            if(count($resul)>0){
+                foreach ($resul as $v) {
+                    $resul2 = new Pposcontrataciones();
+                    $resul2->postulante_id = $this->_user->id;
+                    $resul2->proceso_contratacion_id = $v->proceso_contratacion_id;
+                    $resul2->fecha_cierre = date("Y-m-d H:i:s");
+                    $resul2->estado = 1;
+                    $resul2->baja_logica = 1; 
+                    if ($resul2->save()) {
+                        //$model = new Ppostulantes();
+                        //$resul3 = $model->cerrarExpEspecifica($v->proceso_contratacion_id,$this->_user->id);
+                        $this->flashSession->success("Exito: Usted termino correctamente su postulación.");
+                    }else{
+                        $this->flashSession->error("Error: no se guardo el registro...");
+                    }
+                }    
             }
+            else{
+                //$this->flashSession->error("Exito: datos guardados correctamentes");                
+                $this->flashSession->success("Exito: datos guardados correctamente.");
+            }
+            
 
         }
     }    
-
+    
     $model = new Ppostulantes();
     $resul0 = $model->verificarangofecha(); 
     $resul = $model->verificarPostulacion($this->_user->id);
 
-    if (count($resul0)>0) {
+    /*if (count($resul0)>0) {
         if(count($resul)>0){
         $this->response->redirect('/ppostulantes/view/');   
         }    
     }else{
         $this->response->redirect('/ppostulantes/view/');   
     }
+    */
     
+    if(count($resul)>0){
+        $this->response->redirect('/ppostulantes/view/');   
+    }
 
-
-    // $detalle_array=array(
-    //             "BACHILLER" => "BACHILLER",
-    //             "ESTUDIANTE UNIVERSITARIO"   => "ESTUDIANTE UNIVERSITARIO",
-    //             "TECNICO MEDIO" => "TECNICO MEDIO",
-    //             "TECNICO SUPERIOR" => "TECNICO SUPERIOR",
-    //             "EGRESADO" => "EGRESADO",
-    //             "LICENCIADO - INGENIERO" => "LICENCIADO - INGENIERO",
-    //             "DIPLOMADO" => "DIPLOMADO",
-    //             "MAESTRIA" => "MAESTRIA",
-    //             "DOCTORADO" => "DOCTORADO"
-    //             ); 
 
     $gestion_array = array("2015" => "2015",
                 "2014" => "2014",

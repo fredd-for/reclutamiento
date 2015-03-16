@@ -26,9 +26,9 @@ use Phalcon\Tag; ?>
 			
 			<?php 
 			$model = new Ppostulantes();
-        	$resul= $model->listacargos(8);
-        	foreach ($resul as $v) {
-        		echo '<li>'.$v->cargo.'</li>';
+        	$resul= $model->listacargos($v->id);
+        	foreach ($resul as $val) {
+        		echo '<li>'.$val->cargo.'</li>';
         	}
 			 ?>
 			 </ol>
