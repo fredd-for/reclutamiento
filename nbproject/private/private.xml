@@ -7,6 +7,7 @@
             <file>file:/var/www/html/reclutamiento/app/config/services.php</file>
             <file>file:/var/www/html/reclutamiento/index.php</file>
             <file>file:/var/www/html/reclutamiento/app/controllers/LoginController.php</file>
+            <file>file:/var/www/html/reclutamiento/app/controllers/PpostulantesController.php</file>
         </group>
     </open-files>
 </project-private>

@@ -204,21 +204,22 @@ class Ppostulantes extends \Phalcon\Mvc\Model
     }
 
     public function cargosConvocatoria()
-    {
-        $sql = "SELECT p.id AS proceso_contratacion_id,s.id,CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
+    {   
+        $sql = "SELECT DISTINCT on (c.cargo) c.cargo,p.id AS proceso_contratacion_id,s.id, CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
         FROM procesoscontrataciones p
         INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id AND s.baja_logica=1
         INNER JOIN pacs pa ON s.pac_id= pa.id
         INNER JOIN cargos c ON pa.cargo_id=c.id
-        WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1 ";
+        WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1
+        ORDER BY c.cargo , s.id";
 
- /*       $sql = "SELECT  DISTINCT CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo, p.codigo_proceso, p.fecha_publ, p.fecha_concl
-        FROM procesoscontrataciones p
-        INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id AND s.baja_logica=1
-        INNER JOIN pacs pa ON s.pac_id= pa.id
-        INNER JOIN cargos c ON pa.cargo_id=c.id
-        WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1 ";
-        */
+        // $sql = "SELECT p.id AS proceso_contratacion_id,s.id,CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
+        // FROM procesoscontrataciones p
+        // INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id AND s.baja_logica=1
+        // INNER JOIN pacs pa ON s.pac_id= pa.id
+        // INNER JOIN cargos c ON pa.cargo_id=c.id
+        // WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1 ";
+
         $this->_db = new Procesoscontrataciones();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));        
     }
@@ -241,7 +242,7 @@ class Ppostulantes extends \Phalcon\Mvc\Model
         $sql="SELECT pf.*, pa.valor_1,pa2.valor_1 documento_text FROM pformaciones pf
         INNER JOIN parametros pa ON pf.detalle = pa.id
         LEFT JOIN parametros pa2 ON pf.documento_id = pa2.id
-        WHERE pf.postulante_id='$postulante_id' ORDER BY pf.id ASC";
+        WHERE pf.postulante_id='$postulante_id' AND pf.baja_logica = 1 ORDER BY pf.id ASC";
         $this->_db = new Procesoscontrataciones();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
     }
@@ -316,6 +317,19 @@ class Ppostulantes extends \Phalcon\Mvc\Model
         INNER JOIN pacs pa ON s.pac_id= pa.id
         INNER JOIN cargos c ON pa.cargo_id=c.id
         WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1 AND p.id='$proceso_contratacion_id'";
+        $this->_db = new Procesoscontrataciones();
+        return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
+    }
+
+    public function listposseguimiento($postulante_id)
+    {
+        $sql="SELECT p.id AS proceso_contratacion_id,s.id,CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
+        FROM procesoscontrataciones p
+        INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id
+        INNER JOIN pposseguimientos ps ON s.id = ps.seguimiento_id AND ps.baja_logica = 1
+        INNER JOIN pacs pa ON s.pac_id= pa.id
+        INNER JOIN cargos c ON pa.cargo_id=c.id
+        WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1 AND ps.postulante_id='$postulante_id'";
         $this->_db = new Procesoscontrataciones();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
     }

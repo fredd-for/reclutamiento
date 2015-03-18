@@ -34,6 +34,12 @@ class Pposseguimientos extends \Phalcon\Mvc\Model
     public $baja_logica;
 
     /**
+     *
+     * @var integer
+     */
+    public $proceso_contratacion_id;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
@@ -51,7 +57,8 @@ class Pposseguimientos extends \Phalcon\Mvc\Model
             'postulante_id' => 'postulante_id', 
             'seguimiento_id' => 'seguimiento_id', 
             'estado' => 'estado', 
-            'baja_logica' => 'baja_logica'
+            'baja_logica' => 'baja_logica',
+            'proceso_contratacion_id' => 'proceso_contratacion_id'
         );
     }
 

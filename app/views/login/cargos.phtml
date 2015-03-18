@@ -2,7 +2,8 @@
 use Phalcon\Tag; ?>
 <div class="row">
 	<div class="col-md-12">
-	<?php foreach ($convocatoria as $v) { ?>
+	<?php if(count($convocatoria)>0){ ?>
+		<?php foreach ($convocatoria as $v) { ?>
 		<div class="block full">
 			<div class="block-title">
 				<h2>
@@ -25,6 +26,7 @@ use Phalcon\Tag; ?>
 				
 			
 			<?php 
+			
 			$model = new Ppostulantes();
         	$resul= $model->listacargos($v->id);
         	foreach ($resul as $val) {
@@ -34,5 +36,18 @@ use Phalcon\Tag; ?>
 			 </ol>
 		</div>	
 	<?php } ?>
+	<?php }	else { ?>
+			<div class="alert alert-warning alert-dismissable">
+                    <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+                    <h4>
+                        <i class="fa fa-info-circle"></i>
+                        Información
+                    </h4>
+                    Estimado Postulante. Actualmente no hay ningun cargo dentro la convocatoria. Pero usted puede realizar el registro y llenado de su postulación para pasas por el proceso de selección, para futuras convocatorias.
+                    <!-- <a class="alert-link" href="javascript:void(0)">day</a>
+                    ! -->
+                </div>
+	<?php	}?>
+	
 	</div>
 </div>

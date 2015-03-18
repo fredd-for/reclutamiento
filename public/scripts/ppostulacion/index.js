@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+
+
         /***********AJAX FORMACION ACADEMICA**************/
         //$("#masked_date").mask("99/99/9999");
         cargarPformaciones();   
@@ -1411,8 +1414,78 @@ $('#testForm_preferenciapersonal').validate({
 
 });
 
-
 $('#fecha_emision').datepicker();
+
+
+if($("#nro_puestos").val()>0){
+    if($("#listposseguimiento").val()==0){
+        $('#myModal_seleccionarcargos').modal('show');    
+    }
+    
+}
+
+
+$('#testForm_seleccionarcargos').validate({
+    // rules: {
+    //     nombres_y_apps_referenciapersonal: {
+    //         required: true
+    //     },
+    //     parentesco_referenciapersonal: {
+    //         required: true
+    //     },
+    //     telefono_referenciapersonal: {
+    //         required: true
+    //     }
+    // },
+    highlight: function (element) {
+        $(element).closest('.control-group').removeClass('success').addClass('error');
+    },
+    success: function (element) {
+        //element.text('OK!').addClass('valid').closest('.control-group').removeClass('error').addClass('success');
+        element.addClass('valid').closest('.control-group').removeClass('error').addClass('success');
+    },
+    submitHandler: function (form) {
+
+        var ids=obtener_ids();
+        var v=$.ajax({
+            url:'/ppostulantes/savepposseguimientos/',
+            type:'POST',
+            datatype: 'json',
+            data:{ids:ids},
+                success: function(data) { 
+                }, //mostramos el error
+                error: function() { alert('Se ha producido un error Inesperado'); }
+            });
+        $('#myModal_seleccionarcargos').modal('hide');
+            return false; // ajax used, block the normal submit
+        }
+    });
+
+$(".seguimiento_ids").click(function() {
+    if (this.checked == true) {
+            $("#" + this.id).addClass("chkcontratos");
+        } else {
+            $("#" + this.id).removeClass("chkcontratos");
+        }
+});
+
+function obtener_ids(){
+    var sum = 0;
+    var listaContratos = "";
+    var separador = ",";
+    try {
+        $(".chkcontratos").each(function () {
+            listaContratos += this.id + separador;
+            sum++;
+        });
+        listaContratos += separador;
+        listaContratos = listaContratos.replace(separador + separador, "");
+        if (sum == 0) listaContratos = "";
+    } catch (e) {
+
+    }
+     return listaContratos;
+}
 
 //$('#paso4').click(false);
 //$("#paso4").unbind("click");

@@ -22,7 +22,7 @@ class PpostulantesController extends ControllerRrhh {
     }
 
     public function indexAction() {
-        $this->view->setVar('variable', $this->variable['loquesea']);
+
     if ($this->request->isPost()) {
         $model = new Ppostulantes();
         $resul = $model->convocatoriasPostuladas($this->_user->id);
@@ -32,6 +32,7 @@ class PpostulantesController extends ControllerRrhh {
         /*if (count($resul)<1) {
             $this->flashSession->error("PASO 4: Debe registrar minimo una Experiencia Relacionado al Cargo");
         }else*/
+        $sms = "";
         if (count($resulReferenciaLaboral)<2) {
             $this->flashSession->error("PASO 9: Debe registrar minimo dos referencias laborales");
         }elseif (count($resulReferenciaPersonal)<2) {
@@ -49,6 +50,7 @@ class PpostulantesController extends ControllerRrhh {
                         //$model = new Ppostulantes();
                         //$resul3 = $model->cerrarExpEspecifica($v->proceso_contratacion_id,$this->_user->id);
                         $this->flashSession->success("Exito: Usted termino correctamente su postulación.");
+                        $sms = "Exito: Usted termino correctamente su postulación.";
                     }else{
                         $this->flashSession->error("Error: no se guardo el registro...");
                     }
@@ -64,8 +66,11 @@ class PpostulantesController extends ControllerRrhh {
     }    
     
     $model = new Ppostulantes();
-    $resul0 = $model->verificarangofecha(); 
+    //$resul0 = $model->verificarangofecha(); 
     $resul = $model->verificarPostulacion($this->_user->id);
+    $listposseguimiento = $model->listposseguimiento($this->_user->id);
+    $this->view->setVar('listposseguimiento', $listposseguimiento);
+
 
     /*if (count($resul0)>0) {
         if(count($resul)>0){
@@ -77,7 +82,7 @@ class PpostulantesController extends ControllerRrhh {
     */
     
     if(count($resul)>0){
-        $this->response->redirect('/ppostulantes/view/');   
+        $this->response->redirect('/ppostulantes/view/'.$sms);   
     }
 
 
@@ -429,7 +434,7 @@ $gestion = $this->tag->selectStatic(
 
 
      $model = new Ppostulantes();
-     $resul = $model->cargosConvocatoria($this->_user->id);
+     $resul = $model->cargosConvocatoria();
 
      $this->view->setVar('puestopostula', $resul);
      $this->view->setVar('detalle', $detalle);
@@ -530,8 +535,12 @@ $this->view->setVar('postulante', $resul);
 
 }
 
-public function viewAction()
+public function viewAction($sms)
 {
+    if ($sms!="") {
+        $this->flashSession->success($sms);    
+    }
+
     $this->view->setVar('usuario', $this->_user);
     $resul = Ppostulantes::findFirstByid($this->_user->id);
     $this->view->setVar('postulante',$resul);
@@ -1213,6 +1222,27 @@ public function deletePreferenciapersonalAction(){
     echo json_encode();
 }
 
+
+public function savepposseguimientosAction()
+{
+       if (isset($_POST['ids'])) {
+            $seg_id = explode(',', $_POST['ids']);
+            foreach ($seg_id as $v) {
+                $seguimiento = Seguimientos::findFirstByid($v);
+
+                $resul = new Pposseguimientos();
+                $resul->postulante_id= $this->_user->id;
+                $resul->seguimiento_id = $v;
+                $resul->estado = 0;
+                $resul->baja_logica = 1;
+                $resul->proceso_contratacion_id = $seguimiento->proceso_contratacion_id;
+                $resul->save();
+            }
+        
+    }
+    $this->view->disable();
+    echo json_encode();
+}
 /*
 end Referencia Personal
  */
