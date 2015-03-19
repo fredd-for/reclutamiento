@@ -224,6 +224,20 @@ class Ppostulantes extends \Phalcon\Mvc\Model
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));        
     }
 
+    public function cargosSeleccionados($postulante_id)
+    {
+        $sql="SELECT v.*, ps.seguimiento_id FROM
+(SELECT DISTINCT on (c.cargo) c.cargo,p.id AS proceso_contratacion_id,s.id, CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
+        FROM procesoscontrataciones p
+        INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id AND s.baja_logica=1
+        INNER JOIN pacs pa ON s.pac_id= pa.id
+        INNER JOIN cargos c ON pa.cargo_id=c.id
+        WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1
+        ORDER BY c.cargo , s.id) v
+LEFT JOIN pposseguimientos ps ON v.id=ps.seguimiento_id AND ps.postulante_id = '$postulante_id'";
+        $this->_db = new Procesoscontrataciones();
+        return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
+    }
     // public function puestopostula($postulante_id)
     // {
     //     $sql = "SELECT p.*,CONCAT(pr.codigo_proceso,' ',c.cargo) AS cargo

@@ -1221,7 +1221,9 @@ public function deletePreferenciapersonalAction(){
     $this->view->disable();
     echo json_encode();
 }
-
+/*
+end Referencia Personal
+ */
 
 public function savepposseguimientosAction()
 {
@@ -1243,9 +1245,31 @@ public function savepposseguimientosAction()
     $this->view->disable();
     echo json_encode();
 }
-/*
-end Referencia Personal
- */
+
+public function mascargosAction()
+    {
+        if ($_POST['ids']!='') {
+            $seg_id = explode(',', $_POST['ids']);
+            foreach ($seg_id as $v) {
+                $seguimiento = Seguimientos::findFirstByid($v);
+
+                $resul = new Pposseguimientos();
+                $resul->postulante_id= $this->_user->id;
+                $resul->seguimiento_id = $v;
+                $resul->estado = 0;
+                $resul->baja_logica = 1;
+                $resul->proceso_contratacion_id = $seguimiento->proceso_contratacion_id;
+                $resul->save();
+            }
+            $this->flashSession->success("Exito: adiciono un nuevo cargo a postularse, le recomendamos ir al PASO 4 para llenar experiencia relacionada al cargo.");
+            $this->response->redirect('/ppostulantes');
+        }
+
+        $model= new Ppostulantes();
+        $cargosSeleccionados = $model->cargosSeleccionados($this->_user->id);
+        $this->view->setVar('cargosSeleccionados', $cargosSeleccionados);
+    }
+
 
 
 

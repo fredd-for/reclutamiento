@@ -1,0 +1,76 @@
+<script type="text/javascript">
+	$(document).ready(function () {
+		
+// update the edited row when the user clicks the 'Save' button.
+$("#add").click(function(){
+	$("#titulo").text("Adicionar");
+	$("#id").val("");
+	$("#orden").val("");
+	$("#nivel_estructural").val("");
+	$('#myModal').modal('show');
+//$("#popupWindow").jqxWindow('open');
+});
+
+$(".seguimiento_ids").click(function() {
+			
+    if (this.checked == true) {
+            $("#" + this.id).addClass("chkcontratos");
+            $("#ids").val(obtener_ids());
+        } else {
+            $("#" + this.id).removeClass("chkcontratos");
+            $("#ids").val(obtener_ids());
+        }
+	});
+
+function obtener_ids(){
+    var sum = 0;
+    var listaContratos = "";
+    var separador = ",";
+    try {
+        $(".chkcontratos").each(function () {
+            listaContratos += this.id + separador;
+            sum++;
+        });
+        listaContratos += separador;
+        listaContratos = listaContratos.replace(separador + separador, "");
+        if (sum == 0) listaContratos = "";
+    } catch (e) {
+
+    }
+     return listaContratos;
+}
+
+
+});
+</script>
+
+
+
+<div class="row">
+	<div class="col-md-12">
+	 <form class="form-horizontal" id="testForm" data-toggle="validator" method="post" />
+		<div class="form-group">
+                    <label class="col-md-3 control-label">Seleccione el/los cargos:</label>
+                    <div class="col-md-9" >
+                        <?php foreach ($cargosSeleccionados as $v) { ?>
+                        <?php 
+                        $disable = '';
+                        $checke='';
+                        if ($v->seguimiento_id>0) {
+                        	$disable = 'disabled';
+                        	$checke='checked';
+                        } ?>
+                        <div class="checkbox">
+                            <label for="example-checkbox1">
+                            <input type="checkbox" class="seguimiento_ids" id="<?php echo $v->id ?>" name="seguimiento_ids[]" value="<?php echo $v->id ?>" <?php echo $disable ?> <?php echo $checke ?>/> <?php echo $v->cargo ?>
+                            </label>
+                        </div>
+                        <?php } ?>
+                    </div>
+        </div>
+        <input type="hidden" name="ids" id='ids' value="">
+        <a href="/ppostulantes" class="btn btn-default">Cancelar</a>
+        <button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+        </form>
+	</div>
+</div>
