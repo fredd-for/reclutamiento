@@ -11,7 +11,7 @@ return new \Phalcon\Config(array(
         'host'        => 'localhost',
         'username'    => 'user_rrhh',
         'password'    => 'pass_rrhh',
-        'dbname'      => 'bd_rrhh_prueba',
+        'dbname'      => 'bd_rrhh2',
         
     ),
     'application' => array(
