@@ -205,7 +205,7 @@ class Ppostulantes extends \Phalcon\Mvc\Model
 
     public function cargosConvocatoria()
     {   
-        $sql = "SELECT DISTINCT on (c.cargo) c.cargo,p.id AS proceso_contratacion_id,s.id, CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
+        $sql = "SELECT DISTINCT on (c.cargo) c.cargo,p.id AS proceso_contratacion_id,s.id, CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo, p.dominio
         FROM procesoscontrataciones p
         INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id AND s.baja_logica=1
         INNER JOIN pacs pa ON s.pac_id= pa.id
@@ -227,7 +227,7 @@ class Ppostulantes extends \Phalcon\Mvc\Model
     public function cargosSeleccionados($postulante_id)
     {
         $sql="SELECT v.*, ps.seguimiento_id FROM
-(SELECT DISTINCT on (c.cargo) c.cargo,p.id AS proceso_contratacion_id,s.id, CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo
+(SELECT DISTINCT on (c.cargo) c.cargo,p.id AS proceso_contratacion_id,s.id, CONCAT(p.codigo_proceso,' ',c.cargo) AS cargo, p.dominio
         FROM procesoscontrataciones p
         INNER JOIN seguimientos s ON p.id = s.proceso_contratacion_id AND s.baja_logica=1
         INNER JOIN pacs pa ON s.pac_id= pa.id
@@ -280,8 +280,13 @@ LEFT JOIN pposseguimientos ps ON v.id=ps.seguimiento_id AND ps.postulante_id = '
 
     public function convocatoriasPostuladas($postulante_id)
     {
-        $sql="SELECT proceso_contratacion_id 
-        FROM pexplabespecificas WHERE postulante_id='$postulante_id' AND estado=0 AND baja_logica=1 GROUP BY proceso_contratacion_id ";
+        // $sql="SELECT proceso_contratacion_id 
+        // FROM pexplabespecificas WHERE postulante_id='$postulante_id' AND estado=0 AND baja_logica=1 GROUP BY proceso_contratacion_id ";
+        $sql = "SELECT * 
+        FROM pposseguimientos 
+        WHERE postulante_id = '$postulante_id' AND proceso_contratacion_id in (SELECT p.id
+            FROM procesoscontrataciones p
+            WHERE CURRENT_DATE BETWEEN p.fecha_publ AND p.fecha_recep AND p.baja_logica=1)";
         $this->_db = new Procesoscontrataciones();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
     }

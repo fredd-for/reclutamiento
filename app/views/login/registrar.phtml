@@ -27,6 +27,7 @@
                                         <?php // } ?>
                                     </div>
                                 </div> -->
+                                <?php //echo $_SERVER ["SERVER_NAME"]; ?>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Lugar de Postulación <span class="text-danger">*</span></label>
                                     <div class="col-md-8">
@@ -229,8 +230,11 @@
                         Información
                     </h4>
                     Usted se puede postular a los siguientes cargos.
-                    <?php  foreach ($cargos as $v) { ?>
-                    <dd><?php  echo $v->cargo ?></dd>
+                    <?php  foreach ($cargos as $v) { 
+                        if($v->dominio == $_SERVER ["SERVER_NAME"] || $v->dominio==''){?>
+                            <dd><?php  echo $v->cargo ?></dd>
+                        <?php } ?>
+                    
                     <?php  } ?>
                     <!-- <a class="alert-link" href="javascript:void(0)">day</a>
                     ! -->

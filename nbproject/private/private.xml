@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/var/www/html/reclutamiento/app/views/index.phtml</file>
-            <file>file:/var/www/html/reclutamiento/app/config/services.php</file>
-            <file>file:/var/www/html/reclutamiento/index.php</file>
-            <file>file:/var/www/html/reclutamiento/app/controllers/LoginController.php</file>
-            <file>file:/var/www/html/reclutamiento/app/controllers/PpostulantesController.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

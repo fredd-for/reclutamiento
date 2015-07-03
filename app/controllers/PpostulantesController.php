@@ -24,16 +24,19 @@ class PpostulantesController extends ControllerRrhh {
     public function indexAction() {
 
     if ($this->request->isPost()) {
+        
+        
+        
         $model = new Ppostulantes();
-        $resul = $model->convocatoriasPostuladas($this->_user->id);
+        $convocatorias=$model->cargosConvocatoria();
+        $resul = $model->convocatoriasPostuladas($this->_user->id);    
+        
         $resulReferenciaLaboral = Preferencias::find(array("postulante_id='".$this->_user->id."' and baja_logica=1"));
         $resulReferenciaPersonal = Preferenciaspersonales::find(array("postulante_id='".$this->_user->id."' and baja_logica=1"));
         //$c = $_POST['nro_puestos'];
-        /*if (count($resul)<1) {
-            $this->flashSession->error("PASO 4: Debe registrar minimo una Experiencia Relacionado al Cargo");
-        }else*/
-        $sms = "";
-        if (count($resulReferenciaLaboral)<2) {
+        if (count($convocatorias)>0 && count($resul)<1) {
+            $this->flashSession->error("Menu Inicio: Debe registrar minimo un cargo a postularse");
+        }elseif (count($resulReferenciaLaboral)<2) {
             $this->flashSession->error("PASO 9: Debe registrar minimo dos referencias laborales");
         }elseif (count($resulReferenciaPersonal)<2) {
             $this->flashSession->error("PASO 10: Debe registrar minimo dos referencias personales");
@@ -58,7 +61,7 @@ class PpostulantesController extends ControllerRrhh {
             }
             else{
                 //$this->flashSession->error("Exito: datos guardados correctamentes");                
-                $this->flashSession->success("Exito: datos guardados correctamente.");
+                $this->flashSession->success("Exito: datos guardados correctamente. Usted termino su postulación luego de la fecha limite, o no hay convocatorias vigentes.");
             }
             
 

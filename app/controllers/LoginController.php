@@ -239,7 +239,8 @@ class LoginController extends \Phalcon\Mvc\Controller {
 
     public function descargarAction()
     {
-        $filename = 'file/convocatoria.pdf';
+        //$filename = 'file/convocatoria.pdf';
+        $filename = 'file/convocatoria_publica_externa_002-2015.pdf';
         header('Pragma: public');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
