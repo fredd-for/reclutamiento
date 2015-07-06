@@ -60,7 +60,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
                     <p>Acaba de actualizar su contraseña al sistema de postulación de la empresa "MI TELEFERICO".</p>
                     <p><b>Usuario:</b> '.$correo_destinatario.'</p>
                     <p><b>Contraseña:</b> '.$password.'</p><br>
-                    <p>http://convocatorias.miteleferico.bo/</p>';
+                    <p>http://convocatoriainterna.miteleferico.bo/</p>';
                     $contenido = 'Estimad@ '.$destinatario.', Acaba de realizar su registro correctamente al sistema de postulación de la empresa "MI TELEFERICO". Usuario: '.$correo_destinatario.' Contraseña: '.$password.' http://convocatorias.miteleferico.bo/';
                     $mail = new PHPMailer();
                     $mail->IsSMTP();
@@ -240,7 +240,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
     public function descargarAction()
     {
         //$filename = 'file/convocatoria.pdf';
-        $filename = 'file/convocatoria_publica_externa_002-2015.pdf';
+        $filename = 'file/CONVOCATORIA PUBLICA INTERNA 003-2015.pdf';
         header('Pragma: public');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
