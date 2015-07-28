@@ -1452,7 +1452,9 @@ $('#testForm_seleccionarcargos').validate({
             type:'POST',
             datatype: 'json',
             data:{ids:ids},
-                success: function(data) { 
+                success: function(data) {
+                var url = "/ppostulantes";    
+                $(location).attr('href',url); 
                 }, //mostramos el error
                 error: function() { alert('Se ha producido un error Inesperado'); }
             });
