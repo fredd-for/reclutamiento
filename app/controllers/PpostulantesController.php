@@ -1563,8 +1563,9 @@ $html = '
             </tr>
             '.$referenciapersonal_html.'
         </table>
-        <br><br><br><br>
-        <div style="margin: auto;text-align:center;width:200px;border-top-color:black;border-top-style:dotted;border-top-width:1px; ">FIRMA DEL POSTULANTE</div>
+        <br>
+        <br>
+        
         <h5> FECHA DE EMISIÓN DEL REPORTE: '.date("d-m-Y H:i:s").' </h3>
             <h5> NOTA:ESTE DOCUMENTO DE POSTULACIÓN ES CONSIDERADO COMO UNA DECLARACIÓN JURADA, ESTO SIGNIFICA QUE TIENE VALOR DE PUNTUACIÓN AL MOMENTO DE EVALUAR SU POSTULACIÓN. </h3>
             </div>
