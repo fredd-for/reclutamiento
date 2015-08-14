@@ -28,24 +28,29 @@ if (isset($_POST['username'])) {
             </div>
         </form>
     </div>
-    <?php $file_convocatoria='file/CONVOCATORIA PUBLICA EXTERNA 4 - CPE04.pdf'; ?>
+    <?php // $file_convocatoria='file/CONVOCATORIA PUBLICA EXTERNA 4 - CPE04.pdf'; ?>
     <div class="col-md-6">
         <h3 class="dark-grey">Terminos y Condiciones</h3>
         <p> Para ser parte del Sistema de Transporte Urbano mas importante del país</p>
-        <p> Convocatoria Pública Externa Nro 004/2015, 
-        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">descargar aquí</a></p>
-        <?php // $file_convocatoria ='file/CONVOCATORIA PUBLICA EXTERNA 4 - CPE04.pdf' ?>
-       <!--  <p> Resultados de la convocatoria:</p>
+        <p> Convocatoria Pública Externa Nro 004/2015;
+        <!-- <a href="/login/descargar/?file=<?php //echo $file_convocatoria ?>" target="_blank">descargar aquí</a> -->
+        </p>
+        
+        <p> Resultados de la convocatoria:</p>
         <ul>
-            <li>Profesional de Archivo y Registro, 
-        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">descargar aquí</a>
+            <?php $file_convocatoria ='file/CUADRO RESUMEN-EV. CURRICULAR - JDCMV.pdf' ?>
+            <li> 
+        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">1. Jefe del Departamento de Comercialización, Marketing y Ventas</a>
             </li>
+            <?php $file_convocatoria ='file/CUADRO RESUMEN-EV. CURRICULAR - JDPG.pdf' ?>
+            <li> 
+        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">2. Jefe Departamento de Planificación y Gestión</a>
+            </li>
+            <?php $file_convocatoria ='file/CUADRO RESUMEN-EV. CURRICULAR PDO.pdf' ?>
             <li>
-                <?php // $file_convocatoria ='file/CUADRO RESUMEN-Responsable de dotacion de personal.pdf' ?>
-        Responsable de Dotación de Personal, 
-        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">descargar aquí</a>
+        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">3. Profesional en Desarrollo Organizacional</a>
             </li>
-        </ul> -->
+        </ul>
          
         
         <!-- <p> Para ver los puestos disponibles, requisitos y la escala salarial haga click en el link para descargar el archivo. <a href="/login/descargar">descargar aquí</a>  </p> -->
