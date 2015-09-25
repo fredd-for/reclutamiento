@@ -60,7 +60,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
                     <p>Acaba de actualizar su contraseña al sistema de postulación de la empresa "MI TELEFERICO".</p>
                     <p><b>Usuario:</b> '.$correo_destinatario.'</p>
                     <p><b>Contraseña:</b> '.$password.'</p><br>
-                    <p>http://convocatoriainterna.miteleferico.bo/</p>';
+                    <p>http://convocatorias.miteleferico.bo/</p>';
                     $contenido = 'Estimad@ '.$destinatario.', Acaba de realizar su registro correctamente al sistema de postulación de la empresa "MI TELEFERICO". Usuario: '.$correo_destinatario.' Contraseña: '.$password.' http://convocatorias.miteleferico.bo/';
                     $mail = new PHPMailer();
                     $mail->IsSMTP();
@@ -229,7 +229,7 @@ class LoginController extends \Phalcon\Mvc\Controller {
     }
     private function _generarPass()
     {
-        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
         $pass = "";
         for($i=0;$i<8;$i++) {
             $pass .= substr($str,rand(0,62),1);
