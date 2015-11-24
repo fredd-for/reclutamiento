@@ -31,23 +31,29 @@ if (isset($_POST['username'])) {
     <?php // $file_convocatoria='file/CONVOCATORIA PUBLICA EXTERNA 4 - CPE04.pdf'; ?>
     <div class="col-md-6">
         <h3 class="dark-grey">Terminos y Condiciones</h3>
-        <p> Para ser parte del Sistema de Transporte Urbano mas importante del país</p>
-        <p> Convocatoria Pública Interna Nro 006/2015;
-        <?php $file_convocatoria ='file/CPI06.pdf' ?>
-        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">descargar aquí</a>
-        </p>
+        <p> Para ser parte del Sistema de Transporte Urbano mas importante del país.</p>
+        <!-- <p> Convocatoria Pública Externa Nro 005/2015;
+        <?php //$file_convocatoria ='file/actualCPE-05.pdf' ?>
+         <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">descargar aquí</a>
+        </p> -->
         
-        <!-- <p> Resultados Finales:</p>
+        <p>Convocatoria Pública Interna Nro 006/2015:</p>
         <ul>
-            <?php $file_convocatoria ='file/resultado operador de estacion.pdf' ?>
+            <?php $file_convocatoria ='file/RESULTADOS FINALES JDAGJ.pdf' ?>
             <li> 
-        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">1. Operador de Estación</a>
+        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">RESULTADO FINAL JEFE DPTO. ANALISIS Y GESTION JURIDICA</a>
             </li>
-            <?php $file_convocatoria ='file/resultado agente de anden.pdf' ?>
+            <?php // $file_convocatoria ='file/resultado agente de anden.pdf' ?>
+        </ul>
+        <hr>
+        <p>Convocatoria Pública Interna Nro 007/2015:</p>
+        <ul>
+            <?php $file_convocatoria ='file/EV. CURRICULAR - RESPONSABLE DE DESARROLLO.pdf' ?>
             <li> 
-        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">2. Agente de Andén</a>
+        <a href="/login/descargar/?file=<?php echo $file_convocatoria ?>" target="_blank">EV. CURRICULAR - RESPONSABLE DE DESARROLLO</a>
             </li>
-        </ul> -->
+            <?php // $file_convocatoria ='file/resultado agente de anden.pdf' ?>
+        </ul>
          
         
         <!-- <p> Para ver los puestos disponibles, requisitos y la escala salarial haga click en el link para descargar el archivo. <a href="/login/descargar">descargar aquí</a>  </p> -->
@@ -55,5 +61,3 @@ if (isset($_POST['username'])) {
         <a href="/login/registrar" class="btn btn-login">Registrarme</a>
     </div>
 </div>
-
-

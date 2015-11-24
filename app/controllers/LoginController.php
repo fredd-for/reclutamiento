@@ -1,7 +1,6 @@
 <?php
  require_once('../app/libs/phpmailer/class.phpmailer.php');
  require_once('../app/libs/phpmailer/class.smtp.php');
- 
 // require_once '../app/phpmailer/class.phpmailer.php';
 class LoginController extends \Phalcon\Mvc\Controller {
 
@@ -90,7 +89,6 @@ class LoginController extends \Phalcon\Mvc\Controller {
         }
         $this->flashSession->error('Email inexsitente en el sistema, o usuario No habilitado');    
     }
-
     
 }
 }
